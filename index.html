@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary: #00d2ff;
-            --secondary: #9d50bb; /* Nebula Purple */
+            --secondary: #9d50bb;
             --text: #ffffff;
             /* ADD YOUR IMAGE URL BELOW */
             --bg-image: url(yeeet.jpg); 
@@ -21,7 +21,7 @@
         }
 
         body {
-            background-color: #0f0c29; /* Fallback color */
+            background-color: #0f0c29;
             background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image);
             background-size: cover;
             background-position: center;
@@ -47,7 +47,6 @@
             text-align: center;
         }
 
-        /* Float Animation for the whole content block */
         #parallax-content {
             transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
             will-change: transform;
@@ -60,16 +59,21 @@
             letter-spacing: -2px;
             margin-bottom: 5px;
             
-            /* Space Gradient Logic */
+            /* Space Gradient */
             background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 25%, #9d50bb 50%, #6e48aa 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             
-            /* Text glow that matches the gradient */
-            filter: drop-shadow(0 10px 20px rgba(157, 80, 187, 0.3));
-            animation: floatText 5s ease-in-out infinite, shiftGradient 10s ease infinite;
+            /* Enhanced Glow Effect */
+            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5)) 
+                    drop-shadow(0 0 20px rgba(157, 80, 187, 0.3));
+            
+            animation: 
+                floatText 5s ease-in-out infinite, 
+                shiftGradient 10s ease infinite,
+                glowPulse 3s ease-in-out infinite;
         }
 
         p {
@@ -79,6 +83,7 @@
             margin-bottom: 40px;
             opacity: 0.9;
             animation: floatText 7s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         .contact-info {
@@ -151,11 +156,15 @@
             66% { transform: translateY(5px) rotate(0.5deg); }
         }
 
-        /* Makes the gradient on the text move slowly */
         @keyframes shiftGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.4)) drop-shadow(0 0 20px rgba(157, 80, 187, 0.2)); }
+            50% { filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.7)) drop-shadow(0 0 35px rgba(157, 80, 187, 0.5)); }
         }
     </style>
 </head>
