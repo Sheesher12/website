@@ -61,7 +61,7 @@
             font-size: clamp(3.5rem, 12vw, 7rem);
             font-weight: 900;
             letter-spacing: -2px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: center;
         }
@@ -73,14 +73,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            /* Glow removed as requested */
             filter: none; 
             animation: 
                 floatLetter 3s ease-in-out infinite,
                 shiftGradient 10s ease infinite;
         }
 
-        /* Staggered animation for independent bounce */
         h1 span:nth-child(1) { animation-delay: 0.0s; }
         h1 span:nth-child(2) { animation-delay: 0.1s; }
         h1 span:nth-child(3) { animation-delay: 0.2s; }
@@ -92,13 +90,24 @@
         h1 span:nth-child(9) { animation-delay: 0.8s; }
         h1 span:nth-child(10) { animation-delay: 0.9s; }
 
+        /* --- New Sub-heading --- */
+        .sub-heading {
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: var(--primary);
+            opacity: 0.8;
+            animation: floatParagraph 5s ease-in-out infinite;
+        }
+
         p {
             font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 5px;
             margin-bottom: 40px;
-            opacity: 0.9;
-            animation: floatParagraph 6s ease-in-out infinite;
+            opacity: 0.7;
+            animation: floatParagraph 7s ease-in-out infinite;
         }
 
         .contact-info {
@@ -124,7 +133,7 @@
             align-items: center;
             gap: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            animation: floatBtn 5s ease-in-out infinite;
+            animation: floatBtn 5.5s ease-in-out infinite;
         }
 
         .btn:nth-child(2) {
@@ -167,7 +176,7 @@
 
         @keyframes floatParagraph {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
 
         @keyframes floatBtn {
@@ -191,6 +200,9 @@
             <h1>
                 <span>J</span><span>A</span><span>Y</span><span>E</span><span>S</span><span>H</span><span>_</span><span>I</span><span>R</span><span>L</span>
             </h1>
+            
+            <div class="sub-heading">The Videogame of Life</div>
+            
             <p>After boards bro. After boards.</p>
             
             <div class="contact-info">
