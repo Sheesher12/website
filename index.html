@@ -12,7 +12,7 @@
             --text: #ffffff;
             /* BACKGROUND IMAGE URL */
             --bg-image: url(yet.jpg); 
-            /* FOREGROUND LAYER URL */
+            /* FOREGROUND LAYER URL (Use a transparent PNG for best results) */
             --fg-image: url(yat.png); 
         }
 
@@ -34,12 +34,13 @@
             color: var(--text);
         }
 
+        /* Base Background (Moves very little) */
         .background-base {
             position: absolute;
-            top: -5%;
-            left: -5%;
-            width: 110%;
-            height: 110%;
+            top: -2%;
+            left: -2%;
+            width: 104%;
+            height: 104%;
             background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), var(--bg-image);
             background-size: cover;
             background-position: center;
@@ -47,19 +48,20 @@
             will-change: transform;
         }
 
+        /* Subtle Foreground Layer (Moves slightly more) */
         .parallax-layer {
             position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
             background-image: var(--fg-image);
             background-size: cover;
             background-position: center;
             z-index: 2;
             pointer-events: none;
             will-change: transform;
-            opacity: 0.8;
+            opacity: 0.8; /* Adjust for transparency */
         }
 
         #canvas {
@@ -78,10 +80,11 @@
         }
 
         #parallax-content {
+            transition: transform 0.1s ease-out;
             display: inline-block;
-            will-change: transform;
         }
 
+        /* --- Bouncy Letters (No Glow) --- */
         h1 {
             font-size: clamp(3.5rem, 12vw, 7rem);
             font-weight: 900;
@@ -101,7 +104,7 @@
             animation: floatLetter 3s ease-in-out infinite, shiftGradient 10s ease infinite;
         }
 
-        /* Letter Delays */
+        /* Letter Staggering */
         h1 span:nth-child(1) { animation-delay: 0.0s; }
         h1 span:nth-child(2) { animation-delay: 0.1s; }
         h1 span:nth-child(3) { animation-delay: 0.2s; }
@@ -163,5 +166,115 @@
 
         .insta-tag { color: var(--primary); font-weight: 700; }
 
+        /* Animations */
         @keyframes floatLetter { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
-        @keyframes floatText { 0%, 100%
+        @keyframes floatText { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        @keyframes floatBtn { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        @keyframes shiftGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    </style>
+</head>
+<body>
+
+    <div class="background-base" id="bg-base"></div>
+    <div class="parallax-layer" id="fg-layer"></div>
+    <canvas id="canvas"></canvas>
+
+    <div class="container">
+        <div id="parallax-content">
+            <h1>
+                <span>J</span><span>A</span><span>Y</span><span>E</span><span>S</span><span>H</span><span>_</span><span>I</span><span>R</span><span>L</span>
+            </h1>
+            <div class="sub-heading">The Videogame of Life</div>
+            <p>After boards bro. After boards.</p>
+            <div class="contact-info">
+                <a href="tel:+919959297618" class="btn">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Phone</span>
+                </a>
+                <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span class="insta-tag">@jayesh_irl</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bgBase = document.getElementById('bg-base');
+        const fgLayer = document.getElementById('fg-layer');
+        const content = document.getElementById('parallax-content');
+
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX - window.innerWidth / 2);
+            const y = (e.clientY - window.innerHeight / 2);
+
+            // Very slight movement for deep layers
+            bgBase.style.transform = `translate(${x / 120}px, ${y / 120}px)`;
+            fgLayer.style.transform = `translate(${x / 60}px, ${y / 60}px)`;
+            content.style.transform = `translate(${x / 40}px, ${y / 40}px)`;
+        });
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let shootingStars = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for(let i = 0; i < 80; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    a: Math.random()
+                });
+            }
+        }
+
+        function createShootingStar() {
+            const startFromTop = Math.random() > 0.5;
+            shootingStars.push({
+                x: startFromTop ? Math.random() * canvas.width : 0,
+                y: startFromTop ? 0 : Math.random() * (canvas.height / 2),
+                len: Math.random() * 80 + 100,
+                speed: Math.random() * 10 + 10,
+                size: Math.random() * 1 + 0.5,
+                vx: Math.random() * 4 + 8,
+                vy: Math.random() * 2 + 4
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+            });
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                let s = shootingStars[i];
+                s.x += s.vx; s.y += s.vy;
+                const trailX = s.x - (s.vx * 12);
+                const trailY = s.y - (s.vy * 12);
+                const grad = ctx.createLinearGradient(s.x, s.y, trailX, trailY);
+                grad.addColorStop(0, `rgba(255, 255, 255, 1)`);
+                grad.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                ctx.strokeStyle = grad; ctx.lineWidth = s.size; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(trailX, trailY); ctx.stroke();
+                if (s.y > canvas.height || s.x > canvas.width) shootingStars.splice(i, 1);
+            }
+            if (Math.random() < 0.02) createShootingStar();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init(); animate();
+    </script>
+</body>
+</html>
