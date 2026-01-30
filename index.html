@@ -68,21 +68,29 @@
             pointer-events: none;
         }
 
-        /* --- CONTENT CONTAINER --- */
+        /* --- MAIN LAYOUT --- */
         .container {
             position: relative;
             z-index: 10;
             text-align: center;
             width: 100%;
-            pointer-events: none; /* Allows clicks to pass through empty areas */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px; /* Space between the moving text and static buttons */
         }
 
+        /* This controls ONLY the text blocks */
         #parallax-content {
             display: inline-block;
             will-change: transform;
             pointer-events: none; 
+            /* Ensure the pivot point is center so it tilts naturally */
+            transform-origin: center center;
         }
 
+        /* --- TYPOGRAPHY --- */
         h1 {
             font-size: clamp(3.5rem, 12vw, 7rem);
             font-weight: 900;
@@ -103,7 +111,6 @@
             animation: floatLetter 3s ease-in-out infinite, shiftGradient 10s ease infinite;
         }
 
-        /* Letter Staggering */
         h1 span:nth-child(1) { animation-delay: 0.0s; }
         h1 span:nth-child(2) { animation-delay: 0.1s; }
         h1 span:nth-child(3) { animation-delay: 0.2s; }
@@ -129,52 +136,48 @@
             font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 5px;
-            margin-bottom: 40px;
             opacity: 0.7;
             animation: floatText 7s ease-in-out infinite;
             pointer-events: none;
         }
 
-        .contact-info {
+        /* --- STATIC BUTTONS (Moved out of Parallax Content) --- */
+        .static-controls {
+            position: relative;
+            z-index: 100; /* Ensure high z-index */
             display: flex;
             flex-direction: column;
             gap: 20px;
             align-items: center;
-            pointer-events: none; 
+            /* No Transforms or Animations here! */
         }
 
-        /* --- STATIC BUTTONS --- */
         .btn {
-            /* Enable clicking */
             pointer-events: auto; 
             cursor: pointer;
-            z-index: 100;
-            position: relative;
-            
             color: white;
             text-decoration: none;
             padding: 14px 32px;
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 12px;
             background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px); /* Reduced blur for performance */
+            backdrop-filter: blur(10px);
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 12px;
-            
-            /* STATIC: No transform transitions, no animations */
-            transform: none !important;
-            transition: background 0.2s ease, border-color 0.2s ease;
+            transition: background 0.2s ease, transform 0.1s ease;
         }
 
         .btn:hover {
             background: rgba(255,255,255,0.15);
             border-color: var(--primary);
+            /* Simple hover scale is fine, but no parallax movement */
+            transform: scale(1.05);
         }
 
         .btn:active {
-            background: rgba(255,255,255,0.25);
+            transform: scale(0.95);
         }
 
         .insta-tag { color: var(--primary); font-weight: 700; }
@@ -197,16 +200,17 @@
             </h1>
             <div class="sub-heading">The Videogame of Life</div>
             <p>After boards bro. After boards.</p>
-            <div class="contact-info">
-                <a href="tel:+919959297618" class="btn">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>Phone</span>
-                </a>
-                <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn">
-                    <i class="fa-brands fa-instagram"></i>
-                    <span class="insta-tag">@jayesh_irl</span>
-                </a>
-            </div>
+        </div>
+
+        <div class="static-controls">
+            <a href="tel:+919959297618" class="btn">
+                <i class="fa-solid fa-phone"></i>
+                <span>Phone</span>
+            </a>
+            <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn">
+                <i class="fa-brands fa-instagram"></i>
+                <span class="insta-tag">@jayesh_irl</span>
+            </a>
         </div>
     </div>
 
@@ -220,24 +224,22 @@
         let isClicking = false;
         let currentBlur = 0;
 
-        // Function to apply transforms efficiently
         function updateParallax() {
-            // Mouse Pulse Logic
+            // Pulse logic for Background and Text only
             const pulseScale = isClicking ? 1.02 : 1;
+            const contentScale = isClicking ? 1.05 : 1;
             
-            // Calculate rotations
             const x = mouseX;
             const y = mouseY;
             const rotateY = x / 80;
             const rotateX = -y / 80;
 
-            // Apply transforms
+            // Move Backgrounds
             bgBase.style.transform = `translate(${x / 80}px, ${y / 80}px) scale(${pulseScale})`;
             fgLayer.style.transform = `translate(${x / 40}px, ${y / 40}px) scale(${pulseScale})`;
             
-            // Apply 3D tilt to content
-            // Note: We animate the container wrapper, buttons inside are static relative to it
-            content.style.transform = `translate(${x / 20}px, ${y / 20}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            // Move Text Content Only
+            content.style.transform = `translate(${x / 20}px, ${y / 20}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${contentScale})`;
 
             // Apply Blur
             bgBase.style.filter = `blur(${currentBlur}px)`;
@@ -246,26 +248,22 @@
             requestAnimationFrame(updateParallax);
         }
 
-        // Mouse Move Listener
         let lastEventX = 0;
         let lastEventY = 0;
         let blurTimeout;
 
         document.addEventListener('mousemove', (e) => {
-            // Update Coordinates
             mouseX = (e.clientX - window.innerWidth / 2);
             mouseY = (e.clientY - window.innerHeight / 2);
 
-            // Calculate Blur based on speed
             const speedX = Math.abs(e.clientX - lastEventX);
             const speedY = Math.abs(e.clientY - lastEventY);
-            const speed = Math.min((speedX + speedY) / 30, 2); // Cap blur
+            const speed = Math.min((speedX + speedY) / 30, 2);
             
             currentBlur = speed;
             lastEventX = e.clientX;
             lastEventY = e.clientY;
 
-            // Debounce blur reset
             clearTimeout(blurTimeout);
             blurTimeout = setTimeout(() => {
                 currentBlur = 0;
