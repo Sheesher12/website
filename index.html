@@ -27,6 +27,7 @@
             background-size: cover;
             background-position: center;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -46,14 +47,16 @@
             position: relative;
             z-index: 10;
             text-align: center;
+            width: 100%;
         }
 
         #parallax-content {
             transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
             will-change: transform;
+            display: inline-block;
         }
 
-        /* --- Independent Bouncy Letters --- */
+        /* --- Independent Bouncy Letters (No Glow) --- */
         h1 {
             font-size: clamp(3.5rem, 12vw, 7rem);
             font-weight: 900;
@@ -61,7 +64,6 @@
             margin-bottom: 5px;
             display: flex;
             justify-content: center;
-            /* No glow filters here as requested */
         }
 
         h1 span {
@@ -71,22 +73,24 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            /* Glow removed as requested */
+            filter: none; 
             animation: 
                 floatLetter 3s ease-in-out infinite,
                 shiftGradient 10s ease infinite;
         }
 
-        /* Staggering the animation delay for each letter */
-        h1 span:nth-child(1) { animation-delay: 0.1s; }
-        h1 span:nth-child(2) { animation-delay: 0.2s; }
-        h1 span:nth-child(3) { animation-delay: 0.3s; }
-        h1 span:nth-child(4) { animation-delay: 0.4s; }
-        h1 span:nth-child(5) { animation-delay: 0.5s; }
-        h1 span:nth-child(6) { animation-delay: 0.6s; }
-        h1 span:nth-child(7) { animation-delay: 0.7s; } /* Underscore */
-        h1 span:nth-child(8) { animation-delay: 0.8s; }
-        h1 span:nth-child(9) { animation-delay: 0.9s; }
-        h1 span:nth-child(10) { animation-delay: 1.0s; }
+        /* Staggered animation for independent bounce */
+        h1 span:nth-child(1) { animation-delay: 0.0s; }
+        h1 span:nth-child(2) { animation-delay: 0.1s; }
+        h1 span:nth-child(3) { animation-delay: 0.2s; }
+        h1 span:nth-child(4) { animation-delay: 0.3s; }
+        h1 span:nth-child(5) { animation-delay: 0.4s; }
+        h1 span:nth-child(6) { animation-delay: 0.5s; }
+        h1 span:nth-child(7) { animation-delay: 0.6s; }
+        h1 span:nth-child(8) { animation-delay: 0.7s; }
+        h1 span:nth-child(9) { animation-delay: 0.8s; }
+        h1 span:nth-child(10) { animation-delay: 0.9s; }
 
         p {
             font-size: 1.1rem;
@@ -156,177 +160,9 @@
             font-weight: 700;
         }
 
-        /* --- Keyframes --- */
         @keyframes floatLetter {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes floatParagraph {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jayesh_irl</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        :root {
-            --primary: #00d2ff;
-            --secondary: #9d50bb;
-            --text: #ffffff;
-            /* ADD YOUR IMAGE URL BELOW */
-            --bg-image: url(yeeet.jpg); 
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: #0f0c29;
-            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text);
-        }
-
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-        }
-
-        #parallax-content {
-            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
-            will-change: transform;
-        }
-
-        /* --- Independent Bouncy Letters --- */
-        h1 {
-            font-size: clamp(3.5rem, 12vw, 7rem);
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: center;
-            /* No glow filters here as requested */
-        }
-
-        h1 span {
-            display: inline-block;
-            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 25%, #9d50bb 50%, #6e48aa 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: 
-                floatLetter 3s ease-in-out infinite,
-                shiftGradient 10s ease infinite;
-        }
-
-        /* Staggering the animation delay for each letter */
-        h1 span:nth-child(1) { animation-delay: 0.1s; }
-        h1 span:nth-child(2) { animation-delay: 0.2s; }
-        h1 span:nth-child(3) { animation-delay: 0.3s; }
-        h1 span:nth-child(4) { animation-delay: 0.4s; }
-        h1 span:nth-child(5) { animation-delay: 0.5s; }
-        h1 span:nth-child(6) { animation-delay: 0.6s; }
-        h1 span:nth-child(7) { animation-delay: 0.7s; } /* Underscore */
-        h1 span:nth-child(8) { animation-delay: 0.8s; }
-        h1 span:nth-child(9) { animation-delay: 0.9s; }
-        h1 span:nth-child(10) { animation-delay: 1.0s; }
-
-        p {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            animation: floatParagraph 6s ease-in-out infinite;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .btn {
-            color: white;
-            text-decoration: none;
-            padding: 14px 32px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            animation: floatBtn 5s ease-in-out infinite;
-        }
-
-        .btn:nth-child(2) {
-            animation-delay: 1.5s;
-        }
-
-        .btn:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: var(--primary);
-            transform: translateY(-5px) scale(1.05) !important;
-            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.4);
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            transition: 0.6s;
-            pointer-events: none;
-        }
-
-        .btn:hover::after {
-            left: 120%;
-        }
-
-        .insta-tag {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        /* --- Keyframes --- */
-        @keyframes floatLetter {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
 
         @keyframes floatParagraph {
@@ -374,11 +210,9 @@
     <script>
         const content = document.getElementById('parallax-content');
         document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) / 45;
-            const moveY = (e.clientY - window.innerHeight / 2) / 45;
-            content.style.left = `${moveX}px`;
-            content.style.top = `${moveY}px`;
-            content.style.position = "relative";
+            const moveX = (e.clientX - window.innerWidth / 2) / 50;
+            const moveY = (e.clientY - window.innerHeight / 2) / 50;
+            content.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
         const canvas = document.getElementById('canvas');
@@ -461,288 +295,3 @@
     </script>
 </body>
 </html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jayesh_irl</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        :root {
-            --primary: #00d2ff;
-            --secondary: #9d50bb;
-            --text: #ffffff;
-            /* ADD YOUR IMAGE URL BELOW */
-            --bg-image: url(yet.jpg); 
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: #0f0c29;
-            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text);
-        }
-
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-        }
-
-        #parallax-content {
-            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
-            will-change: transform;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        h1 {
-            font-size: clamp(3.5rem, 12vw, 7rem);
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 5px;
-            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 25%, #9d50bb 50%, #6e48aa 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5)) 
-                    drop-shadow(0 0 20px rgba(157, 80, 187, 0.3));
-            animation: 
-                floatText 5s ease-in-out infinite, 
-                shiftGradient 10s ease infinite,
-                glowPulse 3s ease-in-out infinite;
-        }
-
-        p {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            animation: floatText 7s ease-in-out infinite;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .btn {
-            color: white;
-            text-decoration: none;
-            padding: 14px 32px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .btn i {
-            font-size: 1.2rem;
-        }
-
-        .btn:nth-child(2) {
-            animation-delay: 1s;
-        }
-
-        .btn:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: var(--primary);
-            transform: translateY(-5px) scale(1.05) !important;
-            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.4);
-            color: #fff;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            transition: 0.6s;
-            pointer-events: none;
-        }
-
-        .btn:hover::after {
-            left: 120%;
-        }
-
-        .insta-tag {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        /* --- Keyframes --- */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        @keyframes floatText {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-5px) rotate(-0.5deg); }
-            66% { transform: translateY(5px) rotate(0.5deg); }
-        }
-
-        @keyframes shiftGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.4)) drop-shadow(0 0 20px rgba(157, 80, 187, 0.2)); }
-            50% { filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.7)) drop-shadow(0 0 35px rgba(157, 80, 187, 0.5)); }
-        }
-    </style>
-</head>
-<body>
-
-    <canvas id="canvas"></canvas>
-
-    <div class="container">
-        <div id="parallax-content">
-            <h1>JAYESH_IRL</h1>
-            <p>After boards bro. After boards.</p>
-            
-            <div class="contact-info">
-                <a href="tel:+919959297618" class="btn">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>Phone</span>
-                </a>
-                
-                <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn">
-                    <i class="fa-brands fa-instagram"></i>
-                    <span class="insta-tag">@jayesh_irl</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const content = document.getElementById('parallax-content');
-        document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) / 45;
-            const moveY = (e.clientY - window.innerHeight / 2) / 45;
-            content.style.left = `${moveX}px`;
-            content.style.top = `${moveY}px`;
-            content.style.position = "relative";
-        });
-
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let shootingStars = [];
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            shootingStars = [];
-            for(let i = 0; i < 80; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5 + 0.5,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    a: Math.random()
-                });
-            }
-        }
-
-        function createShootingStar() {
-            const startFromTop = Math.random() > 0.5;
-            shootingStars.push({
-                x: startFromTop ? Math.random() * canvas.width : 0,
-                y: startFromTop ? 0 : Math.random() * (canvas.height / 2),
-                len: Math.random() * 80 + 100,
-                speed: Math.random() * 10 + 10,
-                size: Math.random() * 1 + 0.5,
-                vx: Math.random() * 4 + 8,
-                vy: Math.random() * 2 + 4
-            });
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
-            for (let i = shootingStars.length - 1; i >= 0; i--) {
-                let s = shootingStars[i];
-                s.x += s.vx;
-                s.y += s.vy;
-                const trailX = s.x - (s.vx * 12);
-                const trailY = s.y - (s.vy * 12);
-                const grad = ctx.createLinearGradient(s.x, s.y, trailX, trailY);
-                grad.addColorStop(0, `rgba(255, 255, 255, 1)`);
-                grad.addColorStop(1, `rgba(255, 255, 255, 0)`);
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = s.size;
-                ctx.lineCap = 'round';
-                ctx.beginPath();
-                ctx.moveTo(s.x, s.y);
-                ctx.lineTo(trailX, trailY);
-                ctx.stroke();
-                if (s.y > canvas.height || s.x > canvas.width) {
-                    shootingStars.splice(i, 1);
-                }
-            }
-
-            if (Math.random() < 0.02) createShootingStar();
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', init);
-        init();
-        animate();
-    </script>
-</body>
-</html>
-
