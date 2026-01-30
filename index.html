@@ -30,7 +30,7 @@
             justify-content: center;
             align-items: center;
             color: var(--text);
-            perspective: 1000px; /* 3D effect depth */
+            perspective: 1000px;
             cursor: default;
         }
 
@@ -43,10 +43,10 @@
             height: 100%;
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 105% auto; /* Slight zoom to allow movement */
+            background-size: 105% auto;
             will-change: transform, filter;
-            transition: transform 0.1s linear, filter 0.2s ease-out; /* Linear for instant response */
-            pointer-events: none; /* Ensure clicks pass through */
+            transition: transform 0.1s linear, filter 0.2s ease-out;
+            pointer-events: none;
         }
 
         .background-base {
@@ -74,18 +74,15 @@
             z-index: 10;
             text-align: center;
             width: 100%;
-            /* CRITICAL FIX: Disable clicks on the empty container area */
-            pointer-events: none; 
+            pointer-events: none; /* Allows clicks to pass through empty areas */
         }
 
         #parallax-content {
             display: inline-block;
             will-change: transform;
-            /* Allow text selection if desired, but keep container non-blocking */
             pointer-events: none; 
         }
 
-        /* --- TYPOGRAPHY --- */
         h1 {
             font-size: clamp(3.5rem, 12vw, 7rem);
             font-weight: 900;
@@ -106,6 +103,7 @@
             animation: floatLetter 3s ease-in-out infinite, shiftGradient 10s ease infinite;
         }
 
+        /* Letter Staggering */
         h1 span:nth-child(1) { animation-delay: 0.0s; }
         h1 span:nth-child(2) { animation-delay: 0.1s; }
         h1 span:nth-child(3) { animation-delay: 0.2s; }
@@ -137,19 +135,19 @@
             pointer-events: none;
         }
 
-        /* --- INTERACTIVE BUTTONS --- */
         .contact-info {
             display: flex;
             flex-direction: column;
             gap: 20px;
             align-items: center;
-            /* CRITICAL FIX: Re-enable clicks specifically for this area */
             pointer-events: none; 
         }
 
+        /* --- STATIC BUTTONS --- */
         .btn {
-            /* CRITICAL FIX: Make the button clickable and put it on top */
+            /* Enable clicking */
             pointer-events: auto; 
+            cursor: pointer;
             z-index: 100;
             position: relative;
             
@@ -159,31 +157,30 @@
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 12px;
             background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px); /* Reduced blur for performance */
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 12px;
-            cursor: pointer;
             
-            /* Separate animations to avoid conflicts */
-            animation: floatBtn 5.5s ease-in-out infinite;
-            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s, box-shadow 0.3s;
+            /* STATIC: No transform transitions, no animations */
+            transform: none !important;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .btn:hover {
             background: rgba(255,255,255,0.15);
             border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.4);
-            /* We use !important to ensure hover scaling overrides the float animation slightly */
-            transform: scale(1.1) translateY(-5px) !important;
+        }
+
+        .btn:active {
+            background: rgba(255,255,255,0.25);
         }
 
         .insta-tag { color: var(--primary); font-weight: 700; }
 
         @keyframes floatLetter { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
         @keyframes floatText { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-        @keyframes floatBtn { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
         @keyframes shiftGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     </style>
 </head>
@@ -227,7 +224,6 @@
         function updateParallax() {
             // Mouse Pulse Logic
             const pulseScale = isClicking ? 1.02 : 1;
-            const contentScale = isClicking ? 1.05 : 1;
             
             // Calculate rotations
             const x = mouseX;
@@ -240,7 +236,8 @@
             fgLayer.style.transform = `translate(${x / 40}px, ${y / 40}px) scale(${pulseScale})`;
             
             // Apply 3D tilt to content
-            content.style.transform = `translate(${x / 20}px, ${y / 20}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${contentScale})`;
+            // Note: We animate the container wrapper, buttons inside are static relative to it
+            content.style.transform = `translate(${x / 20}px, ${y / 20}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
             // Apply Blur
             bgBase.style.filter = `blur(${currentBlur}px)`;
@@ -275,11 +272,9 @@
             }, 100);
         });
 
-        // Click Listeners
         document.addEventListener('mousedown', () => { isClicking = true; });
         document.addEventListener('mouseup', () => { isClicking = false; });
 
-        // Start the animation loop for smooth updates
         updateParallax();
 
         // --- PARTICLE SYSTEM ---
@@ -334,7 +329,6 @@
                 const trailX = s.x - (s.vx * 12);
                 const trailY = s.y - (s.vy * 12);
                 
-                // Cyan/Purple Gradient for Shooting Stars
                 const grad = ctx.createLinearGradient(s.x, s.y, trailX, trailY);
                 grad.addColorStop(0, '#00d2ff');
                 grad.addColorStop(1, 'transparent');
