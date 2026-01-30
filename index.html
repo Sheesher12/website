@@ -7,22 +7,23 @@
     <style>
         :root {
             --primary: #00d2ff;
-            --secondary: #3a7bd5;
             --text: #ffffff;
+            /* ADD YOUR IMAGE URL BELOW */
+            --bg-image: url('YOUR_IMAGE_LINK_HERE'); 
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: #0f0c29;
-            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: #0f0c29; /* Fallback color */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image);
+            background-size: cover;
+            background-position: center;
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -31,81 +32,70 @@
             color: var(--text);
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         #canvas {
             position: absolute;
             top: 0;
             left: 0;
             z-index: 1;
+            pointer-events: none;
         }
 
         .container {
             position: relative;
             z-index: 10;
             text-align: center;
-            pointer-events: none; /* Allows mouse to pass through to the parallax logic */
         }
 
-        .parallax-wrapper {
-            transition: transform 0.1s ease-out;
-            pointer-events: auto;
+        /* Suble 2D Parallax Wrapper */
+        #parallax-content {
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+            will-change: transform;
         }
 
         h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 800;
+            font-size: clamp(3.5rem, 12vw, 7rem);
+            font-weight: 900;
             letter-spacing: -2px;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         p {
-            font-size: 1.2rem;
-            opacity: 0.8;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
             margin-bottom: 40px;
-            letter-spacing: 2px;
+            opacity: 0.9;
         }
 
-        .contact-box {
+        .contact-info {
             display: flex;
             flex-direction: column;
             gap: 15px;
             align-items: center;
         }
 
-        .link-item {
-            color: var(--text);
+        .btn {
+            color: white;
             text-decoration: none;
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 12px 28px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            font-weight: 500;
         }
 
-        .link-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
+        .btn:hover {
+            background: rgba(255,255,255,0.2);
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transform: scale(1.05);
         }
 
-        .instagram-handle {
-            font-weight: bold;
+        .insta-tag {
             color: var(--primary);
+            font-weight: 700;
         }
     </style>
 </head>
@@ -114,31 +104,31 @@
     <canvas id="canvas"></canvas>
 
     <div class="container">
-        <div class="parallax-wrapper" id="parallax">
-            <h1>SOON</h1>
-            <p>Making this one round of boards later</p>
+        <div id="parallax-content">
+            <h1>COMING SOON</h1>
+            <p>Something Big is Brewing</p>
             
-            <div class="contact-box">
-                <a href="tel:+919959297618" class="link-item">
-                    <span>📞</span> +91 9959297618
+            <div class="contact-info">
+                <a href="tel:+919959297618" class="btn">
+                    📞 +91 9959297618
                 </a>
-                <a href="https://instagram.com/jayesh_irl" target="_blank" class="link-item">
-                    <span>📸</span> <span class="instagram-handle">@jayesh_irl</span>
+                <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn">
+                    📸 <span class="insta-tag">@jayesh_irl</span>
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Parallax Effect ---
-        const wrapper = document.getElementById('parallax');
+        // --- Suble 2D Parallax (X & Y movement only) ---
+        const content = document.getElementById('parallax-content');
         document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 25;
-            const y = (window.innerHeight / 2 - e.pageY) / 25;
-            wrapper.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            const moveX = (e.clientX - window.innerWidth / 2) / 40;
+            const moveY = (e.clientY - window.innerHeight / 2) / 40;
+            content.style.transform = `translate(${moveX}px, ${moveY}px)`;
         });
 
-        // --- Animated Background Particles ---
+        // --- Particle System ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -147,14 +137,14 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 100; i++) {
+            for(let i = 0; i < 80; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 1,
-                    speedX: Math.random() * 1 - 0.5,
-                    speedY: Math.random() * 1 - 0.5,
-                    opacity: Math.random() * 0.5
+                    size: Math.random() * 1.5 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    a: Math.random()
                 });
             }
         }
@@ -162,13 +152,12 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
-                p.x += p.speedX;
-                p.y += p.speedY;
-
-                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                p.x += p.vx;
+                p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
