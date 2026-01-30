@@ -8,6 +8,7 @@
     <style>
         :root {
             --primary: #00d2ff;
+            --nebula: #9d50bb;
             --text: #ffffff;
             --bg-image: url(yt.png); 
             --fg-image: url(yat.png); 
@@ -30,11 +31,11 @@
             justify-content: center;
             align-items: center;
             color: var(--text);
-            opacity: 0; /* Initial state for entry animation */
+            opacity: 0;
             animation: fadeInPage 1.5s ease-out forwards;
         }
 
-        /* --- STABLE MOBILE BACKGROUND FIX --- */
+        /* --- BACKGROUND ENGINE --- */
         .bg-container {
             position: fixed;
             top: -10%;
@@ -48,15 +49,13 @@
 
         .background-base, .parallax-layer {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover; 
             will-change: transform;
-            transition: transform 0.5s cubic-bezier(0.1, 0.5, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.1, 0.5, 0.2, 1);
         }
 
         .background-base {
@@ -72,10 +71,37 @@
 
         #canvas {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             z-index: 3;
             pointer-events: none;
+        }
+
+        /* --- MUSIC TOGGLE --- */
+        .music-control {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            z-index: 100;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .music-control.playing {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+            animation: pulse 2s infinite;
         }
 
         /* --- UI CONTAINER --- */
@@ -104,15 +130,25 @@
             letter-spacing: -2px;
             line-height: 1;
             margin-bottom: 10px;
-            animation-delay: 0.2s;
         }
 
         h1 span {
             display: inline-block;
-            background: linear-gradient(135deg, #ffffff 0%, #00d2ff 100%);
+            /* Space Nebula Gradient */
+            background: linear-gradient(
+                135deg, 
+                #ffffff 0%, 
+                #00d2ff 25%, 
+                #9d50bb 50%, 
+                #6e48aa 75%, 
+                #ffffff 100%
+            );
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: floatLetter 4s ease-in-out infinite;
+            animation: 
+                floatLetter 4s ease-in-out infinite, 
+                shimmerSpace 8s linear infinite;
         }
 
         .sub-heading {
@@ -121,7 +157,6 @@
             letter-spacing: 2px;
             color: var(--primary);
             text-transform: uppercase;
-            animation-delay: 0.4s;
         }
 
         p {
@@ -129,7 +164,6 @@
             letter-spacing: 3px;
             opacity: 0.6;
             margin-top: 10px;
-            animation-delay: 0.6s;
         }
 
         .static-controls {
@@ -139,7 +173,6 @@
             width: 100%;
             max-width: 280px;
             pointer-events: auto;
-            animation-delay: 0.8s;
         }
 
         .btn {
@@ -164,6 +197,7 @@
                 background: rgba(255,255,255,0.12);
                 transform: translateY(-2px);
                 border-color: var(--primary);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             }
         }
 
@@ -171,6 +205,8 @@
         @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes floatLetter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes shimmerSpace { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
 
         #enable-motion {
             position: fixed;
@@ -187,10 +223,19 @@
             z-index: 1000;
             display: none;
             backdrop-filter: blur(5px);
+            pointer-events: auto;
         }
     </style>
 </head>
 <body>
+
+    <div class="music-control" id="music-btn">
+        <i class="fa-solid fa-music" id="music-icon"></i>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="track.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="bg-container">
         <div class="background-base" id="bg-base"></div>
@@ -217,10 +262,12 @@
     <script>
         const bgBase = document.getElementById('bg-base');
         const fgLayer = document.getElementById('fg-layer');
-        const contentGroup = document.getElementById('parallax-content');
         const title = document.getElementById('title-parallax');
         const sub = document.getElementById('sub-parallax');
         const pTag = document.getElementById('p-parallax');
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const bgMusic = document.getElementById('bg-music');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
@@ -231,15 +278,29 @@
 
         if(isMobile) document.getElementById('enable-motion').style.display = 'block';
 
+        // --- MUSIC ---
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.classList.add('playing');
+                musicIcon.classList.replace('fa-music', 'fa-pause');
+            } else {
+                bgMusic.pause();
+                musicBtn.classList.remove('playing');
+                musicIcon.classList.replace('fa-pause', 'fa-music');
+            }
+        });
+
+        // --- PARALLAX ---
         function updateParallax() {
             const x = isMobile ? gyroX : (mouseX / (window.innerWidth / 2));
             const y = isMobile ? gyroY : (mouseY / (window.innerHeight / 2));
 
-            bgBase.style.transform = `translate(${x * -1.8}%, ${y * -1.8}%)`;
-            fgLayer.style.transform = `translate(${x * -3.5}%, ${y * -3.5}%)`;
+            bgBase.style.transform = `translate(${x * -2}%, ${y * -2}%)`;
+            fgLayer.style.transform = `translate(${x * -4}%, ${y * -4}%)`;
 
-            title.style.transform = `translate(${x * 8}px, ${y * 8}px)`;
-            sub.style.transform = `translate(${x * 4}px, ${y * 4}px)`;
+            title.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+            sub.style.transform = `translate(${x * 5}px, ${y * 5}px)`;
             pTag.style.transform = `translate(${x * 2}px, ${y * 2}px)`;
 
             requestAnimationFrame(updateParallax);
@@ -257,20 +318,19 @@
                 DeviceOrientationEvent.requestPermission().then(res => {
                     if (res === 'granted') {
                         window.addEventListener('deviceorientation', e => {
-                            gyroX = e.gamma / 10; 
-                            gyroY = (e.beta - 45) / 10;
+                            gyroX = e.gamma / 10; gyroY = (e.beta - 45) / 10;
                         });
                     }
                 });
             } else {
                 window.addEventListener('deviceorientation', e => {
-                    gyroX = e.gamma / 10; 
-                    gyroY = (e.beta - 45) / 10;
+                    gyroX = e.gamma / 10; gyroY = (e.beta - 45) / 10;
                 });
             }
             this.style.display = 'none';
         });
 
+        // --- VISUALS ---
         function initParticles() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -297,7 +357,7 @@
             stars.forEach((s, i) => {
                 s.x += s.vx; s.y += s.vy;
                 ctx.strokeStyle = `rgba(255, 255, 255, ${s.opacity})`;
-                ctx.lineWidth = 1.5; ctx.beginPath();
+                ctx.lineWidth = 2; ctx.beginPath();
                 ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * 6, s.y - s.vy * 6); ctx.stroke();
                 s.opacity -= 0.015; if(s.opacity <= 0) stars.splice(i, 1);
             });
@@ -310,9 +370,7 @@
 
         document.addEventListener('mousedown', () => {
             if (navigator.vibrate) navigator.vibrate(25);
-            for(let i=0; i<6; i++) {
-                stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 15, vy: 5, opacity: 1});
-            }
+            for(let i=0; i<6; i++) stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 18, vy: 6, opacity: 1});
         });
 
         window.addEventListener('resize', initParticles);
