@@ -22,7 +22,7 @@
         }
 
         body {
-            background-color: #0f0c29;
+            background-color: #050505;
             height: 100vh;
             width: 100vw;
             overflow: hidden;
@@ -30,9 +30,22 @@
             justify-content: center;
             align-items: center;
             color: var(--text);
+            opacity: 0; /* Initial state for entry animation */
+            animation: fadeInPage 1.5s ease-out forwards;
         }
 
-        /* --- BACKGROUND LAYERS (110% Zoom) --- */
+        /* --- STABLE MOBILE BACKGROUND FIX --- */
+        .bg-container {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            z-index: 0;
+            pointer-events: none;
+            background: #050505;
+        }
+
         .background-base, .parallax-layer {
             position: absolute;
             top: 0;
@@ -40,27 +53,21 @@
             width: 100%;
             height: 100%;
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: center center;
             background-size: cover; 
-            /* On mobile, cover works better to prevent white edges */
-            min-width: 110%;
-            min-height: 110%;
-            top: -5%;
-            left: -5%;
-            will-change: transform, filter;
-            transition: transform 0.3s cubic-bezier(0.1, 0.5, 0.2, 1);
-            pointer-events: none;
+            will-change: transform;
+            transition: transform 0.5s cubic-bezier(0.1, 0.5, 0.2, 1);
         }
 
         .background-base {
             background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image);
-            z-index: 0;
+            z-index: 1;
         }
 
         .parallax-layer {
             background-image: var(--fg-image);
             z-index: 2;
-            opacity: 0.6;
+            opacity: 0.7;
         }
 
         #canvas {
@@ -81,12 +88,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: clamp(20px, 8vh, 50px);
+            gap: clamp(30px, 8vh, 50px);
             pointer-events: none;
         }
 
-        #parallax-content {
-            will-change: transform;
+        .fade-element {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 1s ease-out forwards;
         }
 
         h1 {
@@ -95,11 +104,12 @@
             letter-spacing: -2px;
             line-height: 1;
             margin-bottom: 10px;
+            animation-delay: 0.2s;
         }
 
         h1 span {
             display: inline-block;
-            background: linear-gradient(135deg, #00d2ff 0%, #9d50bb 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #00d2ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: floatLetter 4s ease-in-out infinite;
@@ -108,9 +118,10 @@
         .sub-heading {
             font-size: clamp(1rem, 4vw, 1.3rem);
             font-weight: 500;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: var(--primary);
             text-transform: uppercase;
+            animation-delay: 0.4s;
         }
 
         p {
@@ -118,6 +129,7 @@
             letter-spacing: 3px;
             opacity: 0.6;
             margin-top: 10px;
+            animation-delay: 0.6s;
         }
 
         .static-controls {
@@ -127,6 +139,7 @@
             width: 100%;
             max-width: 280px;
             pointer-events: auto;
+            animation-delay: 0.8s;
         }
 
         .btn {
@@ -135,8 +148,9 @@
             padding: 16px;
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 15px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             font-weight: 600;
             display: flex;
             justify-content: center;
@@ -145,72 +159,56 @@
             transition: all 0.3s ease;
         }
 
-        /* Desktop specific hover */
         @media (hover: hover) {
             .btn:hover {
-                background: rgba(255,255,255,0.1);
-                transform: translateY(-3px);
+                background: rgba(255,255,255,0.12);
+                transform: translateY(-2px);
+                border-color: var(--primary);
             }
         }
 
-        /* Custom Cursor */
-        #cursor-glow {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(0,210,255,0.08) 0%, transparent 70%);
-            position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            display: none;
-        }
-
-        @media (min-width: 1024px) { #cursor-glow { display: block; } }
-
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes floatLetter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         #enable-motion {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 10px 20px;
-            background: rgba(0,0,0,0.5);
+            padding: 12px 24px;
+            background: rgba(0, 210, 255, 0.2);
             border: 1px solid var(--primary);
             color: white;
             border-radius: 30px;
-            font-size: 12px;
+            font-size: 11px;
+            font-weight: bold;
             z-index: 1000;
             display: none;
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
 <body>
 
-    <div id="cursor-glow"></div>
-    <div class="background-base" id="bg-base"></div>
-    <div class="parallax-layer" id="fg-layer"></div>
+    <div class="bg-container">
+        <div class="background-base" id="bg-base"></div>
+        <div class="parallax-layer" id="fg-layer"></div>
+    </div>
+    
     <canvas id="canvas"></canvas>
 
     <div class="container">
-        <div id="parallax-content">
-            <h1 id="title-parallax">
-                <span>JAYESH_IRL</span>
-            </h1>
-            <div class="sub-heading" id="sub-parallax">The Videogame of Life</div>
-            <p id="p-parallax">After boards bro. After boards.</p>
+        <div id="parallax-content" class="fade-element" style="animation-delay: 0.2s;">
+            <h1 id="title-parallax"><span>JAYESH_IRL</span></h1>
+            <div class="sub-heading fade-element" id="sub-parallax" style="animation-delay: 0.4s;">The Videogame of Life</div>
+            <p class="fade-element" id="p-parallax" style="animation-delay: 0.6s;">After boards bro. After boards.</p>
         </div>
 
-        <div class="static-controls">
-            <a href="tel:+919959297618" class="btn js-glow-btn">
-                <i class="fa-solid fa-phone"></i>
-                <span>Call Me</span>
-            </a>
-            <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn js-glow-btn">
-                <i class="fa-brands fa-instagram"></i>
-                <span>@jayesh_irl</span>
-            </a>
+        <div class="static-controls fade-element" style="animation-delay: 0.8s;">
+            <a href="tel:+919959297618" class="btn"><i class="fa-solid fa-phone"></i><span>Call Me</span></a>
+            <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn"><i class="fa-brands fa-instagram"></i><span>@jayesh_irl</span></a>
         </div>
     </div>
 
@@ -219,10 +217,10 @@
     <script>
         const bgBase = document.getElementById('bg-base');
         const fgLayer = document.getElementById('fg-layer');
+        const contentGroup = document.getElementById('parallax-content');
         const title = document.getElementById('title-parallax');
         const sub = document.getElementById('sub-parallax');
-        const p = document.getElementById('p-parallax');
-        const cursorGlow = document.getElementById('cursor-glow');
+        const pTag = document.getElementById('p-parallax');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
@@ -233,83 +231,92 @@
 
         if(isMobile) document.getElementById('enable-motion').style.display = 'block';
 
-        function update() {
+        function updateParallax() {
             const x = isMobile ? gyroX : (mouseX / (window.innerWidth / 2));
             const y = isMobile ? gyroY : (mouseY / (window.innerHeight / 2));
 
-            // Background Parallax
-            bgBase.style.transform = `translate(${x * -2}%, ${y * -2}%)`;
-            fgLayer.style.transform = `translate(${x * -4}%, ${y * -4}%)`;
+            bgBase.style.transform = `translate(${x * -1.8}%, ${y * -1.8}%)`;
+            fgLayer.style.transform = `translate(${x * -3.5}%, ${y * -3.5}%)`;
 
-            // Micro Text Parallax (Staggered)
-            title.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
-            sub.style.transform = `translate(${x * 3}px, ${y * 3}px)`;
-            p.style.transform = `translate(${x * 1.5}px, ${y * 1.5}px)`;
+            title.style.transform = `translate(${x * 8}px, ${y * 8}px)`;
+            sub.style.transform = `translate(${x * 4}px, ${y * 4}px)`;
+            pTag.style.transform = `translate(${x * 2}px, ${y * 2}px)`;
 
-            requestAnimationFrame(update);
+            requestAnimationFrame(updateParallax);
         }
 
-        // Desktop Inputs
         document.addEventListener('mousemove', (e) => {
             if(!isMobile) {
                 mouseX = e.clientX - window.innerWidth / 2;
                 mouseY = e.clientY - window.innerHeight / 2;
-                cursorGlow.style.left = e.clientX + 'px';
-                cursorGlow.style.top = e.clientY + 'px';
             }
         });
 
-        // Mobile Motion
         document.getElementById('enable-motion').addEventListener('click', function() {
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission().then(res => {
-                    if (res === 'granted') window.addEventListener('deviceorientation', e => {
-                        gyroX = e.gamma / 15; gyroY = (e.beta - 45) / 15;
-                    });
+                    if (res === 'granted') {
+                        window.addEventListener('deviceorientation', e => {
+                            gyroX = e.gamma / 10; 
+                            gyroY = (e.beta - 45) / 10;
+                        });
+                    }
                 });
             } else {
                 window.addEventListener('deviceorientation', e => {
-                    gyroX = e.gamma / 15; gyroY = (e.beta - 45) / 15;
+                    gyroX = e.gamma / 10; 
+                    gyroY = (e.beta - 45) / 10;
                 });
             }
             this.style.display = 'none';
         });
 
-        // Particles
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            particles = Array.from({length: isMobile ? 30 : 80}, () => ({
-                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                s: Math.random() * 1.5, vx: (Math.random()-0.5)*0.2, vy: (Math.random()-0.5)*0.2
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = Array.from({length: 150}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                s: Math.random() * 1.8,
+                vx: (Math.random() - 0.5) * 0.2,
+                vy: (Math.random() - 0.5) * 0.2,
+                a: Math.random()
             }));
         }
 
-        function draw() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.x += p.vx; p.y += p.vy;
-                if(p.x<0) p.x=canvas.width; if(p.x>canvas.width) p.x=0;
-                ctx.fillStyle = "rgba(255,255,255,0.4)";
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+                if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
+                if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
             });
+
             stars.forEach((s, i) => {
                 s.x += s.vx; s.y += s.vy;
-                ctx.strokeStyle = `rgba(0, 210, 255, ${s.a})`;
-                ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(s.x, s.y);
-                ctx.lineTo(s.x - s.vx*8, s.y - s.vy*8); ctx.stroke();
-                s.a -= 0.01; if(s.a <= 0) stars.splice(i, 1);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                ctx.lineWidth = 1.5; ctx.beginPath();
+                ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * 6, s.y - s.vy * 6); ctx.stroke();
+                s.opacity -= 0.015; if(s.opacity <= 0) stars.splice(i, 1);
             });
-            if(Math.random() < 0.01) stars.push({x: Math.random()*canvas.width, y:0, vx: 8+Math.random()*5, vy: 4+Math.random()*2, a: 1});
-            requestAnimationFrame(draw);
+
+            if(Math.random() < 0.01) {
+                stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 12 + Math.random() * 8, vy: 4 + Math.random() * 4, opacity: 1});
+            }
+            requestAnimationFrame(drawParticles);
         }
 
         document.addEventListener('mousedown', () => {
-            if (navigator.vibrate) navigator.vibrate(15);
-            for(let i=0; i<5; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height/2, vx: 10, vy: 5, a: 1});
+            if (navigator.vibrate) navigator.vibrate(25);
+            for(let i=0; i<6; i++) {
+                stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 15, vy: 5, opacity: 1});
+            }
         });
 
-        window.addEventListener('resize', init);
-        init(); draw(); update();
+        window.addEventListener('resize', initParticles);
+        initParticles(); drawParticles(); updateParallax();
     </script>
 </body>
 </html>
