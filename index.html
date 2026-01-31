@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jayeshirl</title>
-    <link rel="icon" type="image/png" href= favicon-removebg-preview.png>
+    <link rel="icon" type="image/png" href=favicon-removebg-preview.png>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
@@ -40,37 +40,52 @@
         .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
         .layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; will-change: transform; }
         .background-base { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image); z-index: 1; }
-        .block-layer { z-index: 2; }
+        
+        /* Fixed: Higher Z-index for blocks and items to ensure they show */
+        .block-layer { z-index: 5; }
         .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.5; }
 
-        /* MC OBJECTS */
+        /* MC OBJECTS - Adjusted positions to stay within view */
         .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); animation: floatObj 6s ease-in-out infinite; }
-        .block-type { width: 60px; height: 60px; }
-        .item-type { width: 45px; height: 45px; }
-        .b1 { top: 25%; left: 32%; background-image: var(--block-grass); }
-        .b2 { top: 65%; left: 35%; background-image: var(--block-dirt); }
-        .b3 { top: 22%; left: 62%; background-image: var(--block-command); }
-        .b4 { top: 70%; left: 60%; background-image: var(--block-steve); }
-        @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        .block-type { width: 65px; height: 65px; }
+        .item-type { width: 50px; height: 50px; }
+
+        /* Blocks */
+        .b1 { top: 20%; left: 20%; background-image: var(--block-grass); }
+        .b2 { bottom: 20%; left: 25%; background-image: var(--block-dirt); }
+        .b3 { top: 15%; right: 20%; background-image: var(--block-command); }
+        .b4 { bottom: 15%; right: 25%; background-image: var(--block-steve); }
+        .b5 { top: 45%; left: 15%; background-image: var(--block-diamond); }
+        .b6 { top: 50%; right: 15%; background-image: var(--block-stone); }
+
+        /* Items */
+        .i1 { top: 35%; left: 30%; background-image: var(--item-totem); filter: drop-shadow(0 0 10px #ffea00); }
+        .i2 { bottom: 35%; left: 35%; background-image: var(--item-sword); transform: rotate(-45deg); }
+        .i3 { top: 30%; right: 30%; background-image: var(--item-cake); }
+        .i4 { bottom: 30%; right: 35%; background-image: var(--item-pickaxe); }
+
+        @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
 
         /* UI */
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; }
-        h1 { font-family: 'Inter', sans-serif; font-size: 5rem; font-weight: 900; letter-spacing: -2px; }
+        
+        /* JAYESH_IRL: Slightly Bigger */
+        h1 { font-family: 'Inter', sans-serif; font-size: 6.5rem; font-weight: 900; letter-spacing: -3px; }
+        
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
-        .sub-heading { font-size: 1.8rem; color: var(--primary); text-transform: uppercase; margin-bottom: 25px; }
+        .sub-heading { font-size: 2rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
 
         .btn-group { display: flex; flex-direction: column; gap: 10px; pointer-events: auto; width: 220px; margin: 0 auto; }
         
-        /* Updated Buttons: Smaller and Rounded */
         .btn {
-            text-decoration: none; color: white; padding: 8px 16px;
+            text-decoration: none; color: white; padding: 10px 20px;
             border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 50px; /* Fully rounded */
+            border-radius: 50px;
             background: rgba(255, 255, 255, 0.08); 
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 1.2rem; cursor: pointer;
+            font-size: 1.3rem; cursor: pointer;
         }
         .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
 
@@ -91,6 +106,12 @@
             <div class="mc-obj block-type b2"></div>
             <div class="mc-obj block-type b3"></div>
             <div class="mc-obj block-type b4"></div>
+            <div class="mc-obj block-type b5"></div>
+            <div class="mc-obj block-type b6"></div>
+            <div class="mc-obj item-type i1"></div>
+            <div class="mc-obj item-type i2"></div>
+            <div class="mc-obj item-type i3"></div>
+            <div class="mc-obj item-type i4"></div>
         </div>
         <div class="layer parallax-layer" id="fg-layer"></div>
     </div>
@@ -121,7 +142,6 @@
 
         function copyDiscord() { navigator.clipboard.writeText("sheesher_"); alert("Copied: sheesher_"); }
 
-        // --- ENHANCED PARTICLES & SHOOTING STARS ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -136,20 +156,20 @@
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
                     size: Math.random() * 2 + 1,
-                    speedX: (Math.random() - 0.5) * 3, // Faster movement
-                    speedY: (Math.random() - 0.5) * 3,
+                    speedX: (Math.random() - 0.5) * 4, 
+                    speedY: (Math.random() - 0.5) * 4,
                     opacity: Math.random()
                 });
             }
         }
 
         function createStar() {
-            if (Math.random() > 0.98) { // Random chance to spawn star
+            if (Math.random() > 0.97) { 
                 stars.push({
                     x: Math.random() * canvas.width,
-                    y: 0,
-                    length: Math.random() * 80 + 20,
-                    speed: Math.random() * 10 + 10,
+                    y: Math.random() * (canvas.height / 2),
+                    length: Math.random() * 100 + 50,
+                    speed: Math.random() * 15 + 10,
                     opacity: 1
                 });
             }
@@ -157,8 +177,6 @@
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Particles
             particles.forEach(p => {
                 p.x += p.speedX; p.y += p.speedY;
                 if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
@@ -167,20 +185,18 @@
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
             });
 
-            // Shooting Stars
             createStar();
             stars.forEach((s, index) => {
-                s.x -= s.speed; s.y += s.speed;
+                s.x += s.speed; s.y += s.speed; // Adjusted direction
                 s.opacity -= 0.02;
                 if (s.opacity <= 0) stars.splice(index, 1);
                 ctx.strokeStyle = `rgba(255, 255, 255, ${s.opacity})`;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(s.x, s.y);
-                ctx.lineTo(s.x + s.length, s.y - s.length);
+                ctx.lineTo(s.x - s.length, s.y - s.length);
                 ctx.stroke();
             });
-
             requestAnimationFrame(animate);
         }
 
