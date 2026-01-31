@@ -29,100 +29,80 @@
         }
 
         html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-left: 1px solid rgba(255, 255, 255, 0.05); }
+        ::-webkit-scrollbar-thumb { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
-        body { background-color: #030303; color: var(--text); overflow-x: hidden; }
+        body { background-color: #030303; color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* --- SIGNATURE --- */
         #signature {
             width: 140px;
             height: auto;
             display: block;
-            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1), top 0.7s, bottom 0.7s, left 0.7s;
             z-index: 9999;
             filter: drop-shadow(0 2px 15px rgba(0, 210, 255, 0.4));
             pointer-events: none;
+            will-change: transform, top, bottom;
         }
         .sig-initial { position: absolute; top: 8%; left: 50%; transform: translateX(-50%) scale(1.4); }
         .sig-fixed { position: fixed; top: auto; bottom: 30px; left: 30px; transform: translateX(0) scale(0.85); }
 
         section { min-height: 100vh; width: 100vw; position: relative; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 
-        /* --- HERO & PARALLAX --- */
         .hero-section { overflow: hidden; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-        .layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; will-change: transform; }
+        .layer { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background-repeat: no-repeat; background-position: center; background-size: cover; 
+            will-change: transform; transform: translateZ(0); 
+        }
         .background-base { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image); z-index: 1; }
         .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.4; }
 
-        /* --- ORGANIZED MC OBJECTS --- */
         .block-layer { 
-            z-index: 5; 
-            width: 100%; 
-            max-width: 1200px; /* Keeps items from drifting too wide */
-            height: 80vh; 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+            z-index: 5; width: 100%; max-width: 1200px; height: 80vh; 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(0);
+            pointer-events: none; will-change: transform;
         }
 
-        .mc-obj { 
-            position: absolute; 
-            background-size: contain; 
-            background-repeat: no-repeat; 
-            image-rendering: pixelated; 
-            animation: floatSpin 6s ease-in-out infinite; 
-        }
-        
-        /* Items positioned in a loose "ring" around the central text */
+        .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; animation: floatSpin 6s ease-in-out infinite; will-change: transform; }
         .b1 { top: 15%; left: 10%; background-image: var(--block-grass); width: 60px; height: 60px; }
         .b2 { bottom: 15%; left: 12%; background-image: var(--block-dirt); width: 60px; height: 60px; animation-delay: 1s; }
         .b3 { top: 10%; right: 10%; background-image: var(--block-command); width: 60px; height: 60px; animation-delay: 2s; }
         .b4 { bottom: 10%; right: 12%; background-image: var(--block-steve); width: 60px; height: 60px; animation-delay: 3.5s; }
-        
         .i1 { top: 40%; left: 5%; width: 45px; height: 45px; background-image: var(--item-totem); animation-delay: 0.5s; }
         .i2 { bottom: 35%; right: 5%; width: 45px; height: 45px; background-image: var(--item-sword); animation-delay: 1.5s; }
         .i3 { top: 5%; left: 45%; width: 40px; height: 40px; background-image: var(--item-diamond); animation-delay: 2.5s; }
         .i4 { bottom: 5%; left: 42%; width: 50px; height: 50px; background-image: var(--item-cake); animation-delay: 1.2s; }
-
         .i-glow { filter: drop-shadow(0 0 10px rgba(157, 80, 187, 0.5)) drop-shadow(0 0 20px rgba(0, 210, 255, 0.3)); }
 
-        @keyframes floatSpin { 
-            0%, 100% { transform: translateY(0px) rotate(0deg); } 
-            50% { transform: translateY(-20px) rotate(10deg); } 
-        }
+        @keyframes floatSpin { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
 
-        /* --- HERO CONTENT --- */
-        .container { position: relative; z-index: 10; text-align: center; pointer-events: none; padding-top: 120px; }
+        .container { position: relative; z-index: 10; text-align: center; pointer-events: none; padding-top: 120px; will-change: transform; transform: translateZ(0); }
         h1 { font-family: 'Inter', sans-serif; font-size: 9.5rem; font-weight: 900; letter-spacing: -6px; line-height: 0.8; }
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
         .sub-heading { font-size: 2.5rem; color: var(--primary); text-transform: uppercase; margin-top: 25px; margin-bottom: 35px; }
 
         .hero-btn-group { display: flex; flex-direction: column; gap: 12px; pointer-events: auto; width: 220px; margin: 0 auto; }
-        .btn { text-decoration: none; color: white; padding: 12px 20px; border: 1px solid var(--glass-border); border-radius: 50px; background: var(--glass); backdrop-filter: blur(20px); transition: 0.4s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; cursor: pointer; }
-        .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 210, 255, 0.3); }
+        .btn { text-decoration: none; color: white; padding: 12px 20px; border: 1px solid var(--glass-border); border-radius: 50px; background: var(--glass); backdrop-filter: blur(20px); transition: 0.3s transform, 0.3s background; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; cursor: pointer; }
+        .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.05); border-color: var(--primary); }
 
-        /* --- GALLERY & INFO --- */
-        .gallery-section { background: rgba(5, 5, 5, 0.7); padding: 120px 20px; z-index: 20; backdrop-filter: blur(25px); display: flex; flex-direction: column; align-items: center; }
+        .gallery-section { 
+            background: rgba(5, 5, 5, 0.4); padding: 120px 20px; z-index: 20; 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; align-items: center; 
+        }
         .polaroid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px; place-items: center; width: 100%; max-width: 1100px; margin-bottom: 120px; }
-        
-        .polaroid-wrapper { 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            animation: polaroidFloat 7s ease-in-out infinite; 
-            animation-delay: var(--delay);
-        }
-        @keyframes polaroidFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+        .polaroid-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; animation: polaroidFloat 7s ease-in-out infinite; animation-delay: var(--delay); will-change: transform; }
+        @keyframes polaroidFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
         .polaroid { background: white; padding: 10px 10px 35px 10px; box-shadow: 0 15px 45px rgba(0,0,0,0.8); transform: rotate(var(--r)); width: 220px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .img-placeholder { width: 100%; height: 180px; background: #000; overflow: hidden; }
@@ -133,27 +113,17 @@
         .polaroid-wrapper:hover .polaroid { transform: rotate(0deg) scale(1.1); z-index: 100; }
 
         .info-text-container { 
-            width: 85%; 
-            max-width: 850px; 
-            min-height: 120px; 
-            text-align: center; 
-            margin-bottom: 120px; 
-            padding: 45px; 
-            border-radius: 40px; 
-            background: rgba(255, 255, 255, 0.04); 
-            border: 1px solid var(--glass-border); 
-            backdrop-filter: blur(30px); 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: floatGlass 5s ease-in-out infinite;
+            width: 85%; max-width: 850px; min-height: 120px; text-align: center; margin-bottom: 120px; padding: 45px; 
+            border-radius: 40px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--glass-border); 
+            backdrop-filter: blur(30px); animation: floatGlass 5s ease-in-out infinite;
         }
         .info-text { font-size: 1.25rem; line-height: 1.7; color: rgba(255, 255, 255, 0.95); }
-
         @keyframes floatGlass { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         footer { width: 100%; padding: 80px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-socials { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; font-size: 2.2rem; }
         .footer-socials a { color: var(--primary); text-decoration: none; transition: 0.3s; opacity: 0.6; cursor: pointer; }
-        .footer-socials a:hover { color: white; transform: scale(1.2); opacity: 1; }
+        .footer-socials a:hover { color: white; transform: scale(1.1); opacity: 1; }
 
         .music-control { position: fixed; top: 30px; right: 30px; z-index: 10000; cursor: pointer; width: 45px; height: 45px; background: var(--glass); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
         #canvas { position: fixed; top: 0; left: 0; z-index: 4; pointer-events: none; }
@@ -163,9 +133,8 @@
 <body>
 
     <img src="signature.png" id="signature" class="sig-initial" alt="Signature">
-
     <div class="music-control" id="music-btn"><i class="fa-solid fa-music" id="music-icon"></i></div>
-    <audio id="bg-music" loop><source src="track.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-music" loop preload="none"><source src="track.mp3" type="audio/mpeg"></audio>
     <canvas id="canvas"></canvas>
 
     <div id="main-content">
@@ -173,14 +142,8 @@
             <div class="bg-container">
                 <div class="layer background-base" id="bg-base"></div>
                 <div class="block-layer" id="block-layer">
-                    <div class="mc-obj b1"></div>
-                    <div class="mc-obj b2"></div>
-                    <div class="mc-obj b3"></div>
-                    <div class="mc-obj b4"></div>
-                    <div class="mc-obj i-glow i1"></div>
-                    <div class="mc-obj i-glow i2"></div>
-                    <div class="mc-obj i-glow i3"></div>
-                    <div class="mc-obj i-glow i4"></div>
+                    <div class="mc-obj b1"></div><div class="mc-obj b2"></div><div class="mc-obj b3"></div><div class="mc-obj b4"></div>
+                    <div class="mc-obj i-glow i1"></div><div class="mc-obj i-glow i2"></div><div class="mc-obj i-glow i3"></div><div class="mc-obj i-glow i4"></div>
                 </div>
                 <div class="layer parallax-layer" id="fg-layer"></div>
             </div>
@@ -198,28 +161,12 @@
 
         <section class="gallery-section">
             <div class="polaroid-grid">
-                <div class="polaroid-wrapper" style="--delay: 0s;">
-                    <div class="polaroid" style="--r: -3deg;"><div class="img-placeholder"><img src="placeholder1.jpg"></div></div>
-                    <span class="year-label">2011</span>
-                </div>
-                <div class="polaroid-wrapper" style="--delay: 1.5s;">
-                    <div class="polaroid" style="--r: 4deg;"><div class="img-placeholder"><img src="placeholder2.jpg"></div></div>
-                    <span class="year-label">2025</span>
-                </div>
-                <div class="polaroid-wrapper" style="--delay: 0.8s;">
-                    <div class="polaroid" style="--r: -2deg;"><div class="img-placeholder"><img src="placeholder3.jpg"></div></div>
-                    <span class="year-label">2013</span>
-                </div>
-                <div class="polaroid-wrapper" style="--delay: 2.2s;">
-                    <div class="polaroid" style="--r: 6deg;"><div class="img-placeholder"><img src="placeholder4.jpg"></div></div>
-                    <span class="year-label">2026</span>
-                </div>
+                <div class="polaroid-wrapper" style="--delay: 0s;"><div class="polaroid" style="--r: -3deg;"><div class="img-placeholder"><img src="placeholder1.jpg" loading="lazy"></div></div><span class="year-label">2011</span></div>
+                <div class="polaroid-wrapper" style="--delay: 1.5s;"><div class="polaroid" style="--r: 4deg;"><div class="img-placeholder"><img src="placeholder2.jpg" loading="lazy"></div></div><span class="year-label">2025</span></div>
+                <div class="polaroid-wrapper" style="--delay: 0.8s;"><div class="polaroid" style="--r: -2deg;"><div class="img-placeholder"><img src="placeholder3.jpg" loading="lazy"></div></div><span class="year-label">2013</span></div>
+                <div class="polaroid-wrapper" style="--delay: 2.2s;"><div class="polaroid" style="--r: 6deg;"><div class="img-placeholder"><img src="placeholder4.jpg" loading="lazy"></div></div><span class="year-label">2026</span></div>
             </div>
-
-            <div class="info-text-container">
-                <p class="info-text" id="scroll-text"></p>
-            </div>
-
+            <div class="info-text-container"><p class="info-text" id="scroll-text"></p></div>
             <footer>
                 <div class="footer-socials">
                     <a href="https://instagram.com/jayesh_irl" target="_blank"><i class="fa-brands fa-instagram"></i></a>
@@ -234,41 +181,45 @@
     <script>
         const signature = document.getElementById('signature');
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
+        let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
 
-        let mouseX = 0, mouseY = 0;
+        // Optimized Parallax via RequestAnimationFrame
         window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX; mouseY = e.clientY;
-            const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-            const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-            layers.base.style.transform = `translate(${x * -12}px, ${y * -12}px)`;
-            layers.blocks.style.transform = `translate(-50%, -50%) translate(${x * -30}px, ${y * -30}px)`; // Preserves centering
-            layers.fg.style.transform = `translate(${x * -50}px, ${y * -50}px)`;
-            layers.title.style.transform = `translate(${x * 12}px, ${y * 12}px)`;
-        });
+            mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+            mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+        }, { passive: true });
+
+        function updateParallax() {
+            currentX += (mouseX - currentX) * 0.1;
+            currentY += (mouseY - currentY) * 0.1;
+            
+            layers.base.style.transform = `translate3d(${currentX * -12}px, ${currentY * -12}px, 0)`;
+            layers.blocks.style.transform = `translate3d(calc(-50% + ${currentX * -30}px), calc(-50% + ${currentY * -30}px), 0)`;
+            layers.fg.style.transform = `translate3d(${currentX * -50}px, ${currentY * -50}px, 0)`;
+            layers.title.style.transform = `translate3d(${currentX * 12}px, ${currentY * 12}px, 0)`;
+            requestAnimationFrame(updateParallax);
+        }
+        requestAnimationFrame(updateParallax);
 
         window.addEventListener('scroll', () => {
             signature.className = (window.scrollY > 60) ? 'sig-fixed' : 'sig-initial';
-        });
+        }, { passive: true });
 
-        function copyDiscord() { 
-            navigator.clipboard.writeText("sheesher_"); 
-            alert("Discord ID 'sheesher_' copied!"); 
-        }
-
+        // Scroll text logic optimized
         const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
         const scrollTextElement = document.getElementById('scroll-text');
+        const infoContainer = document.querySelector('.info-text-container');
         
         window.addEventListener('scroll', () => {
-            const container = document.querySelector('.info-text-container');
-            const rect = container.getBoundingClientRect();
+            const rect = infoContainer.getBoundingClientRect();
             let progress = (window.innerHeight - rect.top) / (window.innerHeight * 0.7); 
             progress = Math.max(0, Math.min(1, progress * 1.5)); 
             scrollTextElement.textContent = scrollMessage.substring(0, Math.floor(scrollMessage.length * progress));
-        });
+        }, { passive: true });
 
-        // CANVAS
+        // Optimized Canvas
         const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         let particles = [];
         let shootingStars = [];
 
@@ -277,26 +228,19 @@
             init() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.opacity = Math.random() * 0.5 + 0.2;
-                this.vx = (Math.random() - 0.5) * 1;
-                this.vy = (Math.random() - 0.5) * 1;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
                 if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                let dx = mouseX - this.x; let dy = mouseY - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 150) {
-                    let force = (150 - distance) / 150;
-                    this.x -= dx / distance * force * 5;
-                    this.y -= dy / distance * force * 5;
-                }
             }
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                ctx.fillRect(this.x, this.y, this.size, this.size);
             }
         }
 
@@ -304,52 +248,63 @@
             constructor() { this.init(); }
             init() {
                 this.x = Math.random() * canvas.width; this.y = 0;
-                this.length = Math.random() * 100 + 50;
-                this.speed = Math.random() * 15 + 10;
+                this.length = Math.random() * 80 + 40;
+                this.speed = Math.random() * 12 + 8;
                 this.opacity = 1; this.active = true;
             }
             update() {
                 this.x -= this.speed; this.y += this.speed;
-                this.opacity -= 0.015;
+                this.opacity -= 0.02;
                 if (this.opacity <= 0) this.active = false;
             }
             draw() {
+                ctx.save();
                 let gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.length, this.y - this.length);
                 gradient.addColorStop(0, `rgba(0, 210, 255, ${this.opacity})`);
                 gradient.addColorStop(1, `rgba(157, 80, 187, 0)`);
-                ctx.strokeStyle = gradient; ctx.lineWidth = 3;
+                ctx.strokeStyle = gradient; ctx.lineWidth = 2;
                 ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x + this.length, this.y - this.length); ctx.stroke();
+                ctx.restore();
             }
         }
 
         function initCanvas() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            particles = []; for(let i=0; i<80; i++) particles.push(new Particle());
+            particles = []; 
+            const count = window.innerWidth < 768 ? 40 : 70; // Lower count on mobile
+            for(let i=0; i<count; i++) particles.push(new Particle());
         }
 
-        function animate() {
+        function animateCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            if (Math.random() < 0.008) shootingStars.push(new ShootingStar());
+            for(let i=0; i<particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            if (Math.random() < 0.005) shootingStars.push(new ShootingStar());
             shootingStars = shootingStars.filter(s => s.active);
-            shootingStars.forEach(s => { s.update(); s.draw(); });
-            requestAnimationFrame(animate);
+            for(let i=0; i<shootingStars.length; i++) {
+                shootingStars[i].update();
+                shootingStars[i].draw();
+            }
+            requestAnimationFrame(animateCanvas);
         }
 
         window.addEventListener('resize', initCanvas);
-        initCanvas(); animate();
+        initCanvas(); animateCanvas();
 
-        const musicBtn = document.getElementById('music-btn');
         const bgMusic = document.getElementById('bg-music');
-        musicBtn.addEventListener('click', () => {
+        document.getElementById('music-btn').addEventListener('click', () => {
             if (bgMusic.paused) {
                 bgMusic.play();
-                document.getElementById('music-icon').classList.replace('fa-music', 'fa-pause');
+                document.getElementById('music-icon').className = 'fa-solid fa-pause';
             } else {
                 bgMusic.pause();
-                document.getElementById('music-icon').classList.replace('fa-pause', 'fa-music');
+                document.getElementById('music-icon').className = 'fa-solid fa-music';
             }
         });
+
+        function copyDiscord() { navigator.clipboard.writeText("sheesher_"); alert("Discord ID 'sheesher_' copied!"); }
     </script>
 </body>
 </html>
