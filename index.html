@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>jayesh_irl</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
             --primary: #00d2ff;
-            --nebula: #9d50bb;
             --text: #ffffff;
             --bg-image: url(yt.png); 
             --fg-image: url(yat.png);
@@ -21,23 +19,55 @@
             --block-command: url(command.png);
             --block-steve: url(steve.png);
             /* Items */
-            --item-totem: url('totem.png);
-            --item-sword: url('sword.png);
-            --item-cake: url('cake.png);
+            --item-totem: url('otem.png);
+            --item-sword: url(sword.png);
+            --item-cake: url(cake.png);
             --item-pickaxe: url(pickaxe.png);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
-        body { background-color: #050505; height: 100vh; width: 100vw; overflow: hidden; display: flex; justify-content: center; align-items: center; color: var(--text); opacity: 0; animation: fadeInPage 1.5s ease-out forwards; }
+        body { 
+            background-color: #050505; 
+            height: 100vh; 
+            width: 100vw; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: var(--text);
+        }
 
-        /* --- PARALLAX ENGINE --- */
-        .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
-        .background-base, .parallax-layer, .block-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center center; background-size: cover; will-change: transform; transition: transform 0.6s cubic-bezier(0.1, 0.5, 0.2, 1); }
-        .background-base { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), var(--bg-image); z-index: 1; }
+        /* --- PARALLAX LAYERS --- */
+        .bg-container { 
+            position: fixed; 
+            top: -10%; 
+            left: -10%; 
+            width: 120%; 
+            height: 120%; 
+            z-index: 0; 
+            pointer-events: none; 
+        }
+
+        .layer { 
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            background-size: cover; 
+            will-change: transform;
+        }
+
+        .background-base { 
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image); 
+            z-index: 1; 
+        }
+
         .block-layer { z-index: 2; }
+        .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.5; }
 
-        /* --- MC FLOATING OBJECTS --- */
+        /* --- MC OBJECTS --- */
         .mc-obj {
             position: absolute;
             background-size: contain;
@@ -47,64 +77,77 @@
             animation: floatObj 6s ease-in-out infinite;
         }
 
-        .block-type { width: clamp(35px, 6vw, 55px); height: clamp(35px, 6vw, 55px); }
-        .item-type { width: clamp(30px, 5vw, 45px); height: clamp(30px, 5vw, 45px); }
+        .block-type { width: 60px; height: 60px; }
+        .item-type { width: 45px; height: 45px; }
 
-        /* Specific Placements & Animations */
-        .b1 { top: 15%; left: 8%; background-image: var(--block-grass); transform: rotate(-10deg); animation-duration: 5s; }
-        .b2 { top: 75%; left: 12%; background-image: var(--block-dirt); transform: rotate(15deg); animation-duration: 7s; }
-        .b3 { top: 10%; left: 85%; background-image: var(--block-command); filter: drop-shadow(0 0 15px #c170ff); animation-duration: 4s; }
-        .b4 { top: 82%; left: 88%; background-image: var(--block-steve); transform: rotate(-5deg); animation-duration: 8s; }
-        .b5 { top: 40%; left: 5%; background-image: var(--block-diamond); scale: 0.8; animation-delay: -2s; }
-        .b6 { top: 55%; left: 92%; background-image: var(--block-stone); transform: rotate(20deg); scale: 0.9; }
+        /* Positions */
+        .b1 { top: 15%; left: 10%; background-image: var(--block-grass); animation-duration: 5s; }
+        .b2 { top: 70%; left: 15%; background-image: var(--block-dirt); animation-duration: 7s; }
+        .b3 { top: 12%; left: 82%; background-image: var(--block-command); filter: drop-shadow(0 0 15px #c170ff); animation-duration: 4s; }
+        .b4 { top: 75%; left: 85%; background-image: var(--block-steve); animation-duration: 8s; }
+        .b5 { top: 45%; left: 5%; background-image: var(--block-diamond); scale: 0.8; }
+        .b6 { top: 55%; left: 90%; background-image: var(--block-stone); scale: 0.9; }
         
-        /* Items */
-        .i1 { top: 25%; left: 20%; background-image: var(--item-totem); filter: drop-shadow(0 0 10px #ffea00); animation-duration: 4.5s; }
-        .i2 { top: 65%; left: 25%; background-image: var(--item-sword); transform: rotate(-45deg); animation-duration: 5.5s; }
-        .i3 { top: 30%; left: 75%; background-image: var(--item-cake); animation-duration: 9s; }
-        .i4 { top: 60%; left: 80%; background-image: var(--item-pickaxe); transform: rotate(10deg); animation-duration: 6.5s; }
+        .i1 { top: 25%; left: 22%; background-image: var(--item-totem); filter: drop-shadow(0 0 10px #ffea00); }
+        .i2 { top: 60%; left: 28%; background-image: var(--item-sword); transform: rotate(-45deg); }
+        .i3 { top: 30%; left: 72%; background-image: var(--item-cake); }
+        .i4 { top: 65%; left: 78%; background-image: var(--item-pickaxe); }
 
         @keyframes floatObj {
-            0%, 100% { translate: 0 0px; }
-            50% { translate: 0 -25px; }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-25px); }
         }
 
-        .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.6; }
+        /* --- UI & CONTENT --- */
+        .container { 
+            position: relative; 
+            z-index: 10; 
+            text-align: center; 
+            pointer-events: none; 
+        }
+
+        h1 { font-size: 6rem; font-weight: 900; letter-spacing: -2px; }
+        h1 span {
+            display: inline-block;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 5s linear infinite;
+        }
+
+        .sub-heading { font-size: 1.2rem; color: var(--primary); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 40px; }
+
+        .btn-group { display: flex; flex-direction: column; gap: 15px; pointer-events: auto; width: 250px; margin: 0 auto; }
+        .btn {
+            text-decoration: none; color: white; padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-3px); border-color: var(--primary); }
+
+        .music-control {
+            position: fixed; top: 30px; right: 30px; z-index: 100;
+            cursor: pointer; width: 50px; height: 50px;
+            background: rgba(255,255,255,0.1); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
         #canvas { position: absolute; top: 0; left: 0; z-index: 4; pointer-events: none; }
 
-        /* --- UI ELEMENTS --- */
-        .music-control { position: fixed; top: 25px; right: 25px; z-index: 100; cursor: pointer; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; pointer-events: auto; }
-        .music-control.playing { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); animation: pulse 2s infinite; }
-        .container { position: relative; z-index: 10; text-align: center; width: 90%; max-width: 600px; display: flex; flex-direction: column; align-items: center; gap: clamp(30px, 8vh, 50px); pointer-events: none; }
-        .fade-element { opacity: 0; transform: translateY(20px); animation: slideUpFade 1s ease-out forwards; }
-        h1 { font-size: clamp(2.8rem, 12vw, 6.5rem); font-weight: 900; letter-spacing: -2px; }
-        h1 span { display: inline-block; background: linear-gradient(135deg, #ffffff 0%, #00d2ff 25%, #9d50bb 50%, #6e48aa 75%, #ffffff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: floatLetter 4s ease-in-out infinite, shimmerSpace 8s linear infinite; }
-        .sub-heading { font-size: clamp(1rem, 4vw, 1.3rem); color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
-        .btn { text-decoration: none; color: white; padding: 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; }
-
-        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes floatLetter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        @keyframes shimmerSpace { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
-
-        #enable-motion { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: rgba(0, 210, 255, 0.2); border: 1px solid var(--primary); color: white; border-radius: 30px; font-size: 11px; font-weight: bold; z-index: 1000; display: none; backdrop-filter: blur(5px); pointer-events: auto; }
+        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
     </style>
 </head>
 <body>
 
-    <div class="music-control" id="music-btn">
-        <i class="fa-solid fa-music" id="music-icon"></i>
-    </div>
-
-    <audio id="bg-music" loop>
-        <source src="track.mp3" type="audio/mpeg">
-    </audio>
+    <div class="music-control" id="music-btn"><i class="fa-solid fa-music"></i></div>
+    <audio id="bg-music" loop><source src="track.mp3" type="audio/mpeg"></audio>
 
     <div class="bg-container">
-        <div class="background-base" id="bg-base"></div>
-        
-        <div class="block-layer" id="block-layer">
+        <div class="layer background-base" id="bg-base"></div>
+        <div class="layer block-layer" id="block-layer">
             <div class="mc-obj block-type b1"></div>
             <div class="mc-obj block-type b2"></div>
             <div class="mc-obj block-type b3"></div>
@@ -116,142 +159,87 @@
             <div class="mc-obj item-type i3"></div>
             <div class="mc-obj item-type i4"></div>
         </div>
-
-        <div class="parallax-layer" id="fg-layer"></div>
+        <div class="layer parallax-layer" id="fg-layer"></div>
     </div>
-    
+
     <canvas id="canvas"></canvas>
 
     <div class="container">
-        <div id="parallax-content" class="fade-element" style="animation-delay: 0.2s;">
-            <h1 id="title-parallax"><span>JAYESH_IRL</span></h1>
-            <div class="sub-heading fade-element" id="sub-parallax" style="animation-delay: 0.4s;">The Videogame of Life</div>
-            <p class="fade-element" id="p-parallax" style="animation-delay: 0.6s; opacity: 0.6; letter-spacing: 3px; font-size: 0.9rem;">After boards bro. After boards.</p>
-        </div>
-
-        <div class="static-controls fade-element" style="animation-delay: 0.8s;">
-            <a href="tel:+919959297618" class="btn"><i class="fa-solid fa-phone"></i><span>Call Me</span></a>
-            <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn"><i class="fa-brands fa-instagram"></i><span>@jayesh_irl</span></a>
+        <h1 id="title"><span>JAYESH_IRL</span></h1>
+        <div class="sub-heading">The Videogame of Life</div>
+        
+        <div class="btn-group">
+            <a href="tel:+919959297618" class="btn"><i class="fa-solid fa-phone"></i> Call Me</a>
+            <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn"><i class="fa-brands fa-instagram"></i> @jayesh_irl</a>
         </div>
     </div>
 
-    <button id="enable-motion">Unlock Motion Depth</button>
-
     <script>
-        const bgBase = document.getElementById('bg-base');
-        const blockLayer = document.getElementById('block-layer');
-        const fgLayer = document.getElementById('fg-layer');
-        const title = document.getElementById('title-parallax');
-        const sub = document.getElementById('sub-parallax');
-        const pTag = document.getElementById('p-parallax');
+        const layers = {
+            base: document.getElementById('bg-base'),
+            blocks: document.getElementById('block-layer'),
+            fg: document.getElementById('fg-layer'),
+            title: document.getElementById('title')
+        };
+
+        // --- MOUSE PARALLAX ---
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+            const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+            layers.base.style.transform = `translate(${x * -20}px, ${y * -20}px)`;
+            layers.blocks.style.transform = `translate(${x * -50}px, ${y * -50}px)`;
+            layers.fg.style.transform = `translate(${x * -80}px, ${y * -80}px)`;
+            layers.title.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+        });
+
+        // --- MUSIC ---
         const musicBtn = document.getElementById('music-btn');
-        const musicIcon = document.getElementById('music-icon');
         const bgMusic = document.getElementById('bg-music');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-
-        let mouseX = 0, mouseY = 0;
-        let gyroX = 0, gyroY = 0;
-        let particles = [], stars = [];
-        let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        if(isMobile) document.getElementById('enable-motion').style.display = 'block';
-
         musicBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
                 bgMusic.play();
-                musicBtn.classList.add('playing');
-                musicIcon.classList.replace('fa-music', 'fa-pause');
+                musicBtn.style.borderColor = "#00d2ff";
             } else {
                 bgMusic.pause();
-                musicBtn.classList.remove('playing');
-                musicIcon.classList.replace('fa-pause', 'fa-music');
+                musicBtn.style.borderColor = "rgba(255,255,255,0.2)";
             }
         });
 
-        function updateParallax() {
-            const x = isMobile ? gyroX : (mouseX / (window.innerWidth / 2));
-            const y = isMobile ? gyroY : (mouseY / (window.innerHeight / 2));
+        // --- SIMPLE PARTICLES ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-            bgBase.style.transform = `translate(${x * -1.5}%, ${y * -1.5}%)`;
-            blockLayer.style.transform = `translate(${x * -3}%, ${y * -3}%)`;
-            fgLayer.style.transform = `translate(${x * -5}%, ${y * -5}%)`;
-
-            title.style.transform = `translate(${x * 12}px, ${y * 12}px)`;
-            sub.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
-            pTag.style.transform = `translate(${x * 3}px, ${y * 3}px)`;
-
-            requestAnimationFrame(updateParallax);
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            if(!isMobile) {
-                mouseX = e.clientX - window.innerWidth / 2;
-                mouseY = e.clientY - window.innerHeight / 2;
-            }
-        });
-
-        document.getElementById('enable-motion').addEventListener('click', function() {
-            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().then(res => {
-                    if (res === 'granted') {
-                        window.addEventListener('deviceorientation', e => {
-                            gyroX = e.gamma / 10; gyroY = (e.beta - 45) / 10;
-                        });
-                    }
-                });
-            } else {
-                window.addEventListener('deviceorientation', e => {
-                    gyroX = e.gamma / 10; gyroY = (e.beta - 45) / 10;
-                });
-            }
-            this.style.display = 'none';
-        });
-
-        function initParticles() {
+        function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            particles = Array.from({length: 80}, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                s: Math.random() * 1.2,
-                vx: (Math.random() - 0.5) * 0.15,
-                vy: (Math.random() - 0.5) * 0.15,
-                a: Math.random()
-            }));
-        }
-
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
-                if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
-            });
-
-            stars.forEach((s, i) => {
-                s.x += s.vx; s.y += s.vy;
-                ctx.strokeStyle = `rgba(255, 255, 255, ${s.opacity})`;
-                ctx.lineWidth = 2; ctx.beginPath();
-                ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * 6, s.y - s.vy * 6); ctx.stroke();
-                s.opacity -= 0.015; if(s.opacity <= 0) stars.splice(i, 1);
-            });
-
-            if(Math.random() < 0.008) {
-                stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 12 + Math.random() * 8, vy: 4 + Math.random() * 4, opacity: 1});
+            particles = [];
+            for(let i=0; i<50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5
+                });
             }
-            requestAnimationFrame(drawParticles);
         }
 
-        document.addEventListener('mousedown', () => {
-            if (navigator.vibrate) navigator.vibrate(25);
-            for(let i=0; i<6; i++) stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 18, vy: 6, opacity: 1});
-        });
+        function animate() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if(p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
 
-        window.addEventListener('resize', initParticles);
-        initParticles(); drawParticles(); updateParallax();
+        window.addEventListener('resize', init);
+        init(); animate();
     </script>
 </body>
 </html>
