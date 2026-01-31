@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jayeshirl</title>
-    <link rel="icon" type="image/png" href=favicon-removebg-preview.png>
+    <link rel="icon" type="image/png" href= favicon-removebg-preview.png>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
@@ -27,38 +27,50 @@
             --item-pickaxe: url(pickaxe.png);
         }
 
+        /* Apple-style snapping */
+        html {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
 
         body { 
             background-color: #050505; 
-            height: 100vh; width: 100vw; 
-            overflow: hidden; 
-            display: flex; justify-content: center; align-items: center; 
             color: var(--text);
+            overflow-x: hidden;
         }
+
+        section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- SECTION 1: HERO --- */
+        .hero-section { overflow: hidden; }
 
         .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
         .layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; will-change: transform; }
         .background-base { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image); z-index: 1; }
-        
-        /* Fixed: Higher Z-index for blocks and items to ensure they show */
         .block-layer { z-index: 5; }
         .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.5; }
 
-        /* MC OBJECTS - Adjusted positions to stay within view */
         .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); animation: floatObj 6s ease-in-out infinite; }
         .block-type { width: 65px; height: 65px; }
         .item-type { width: 50px; height: 50px; }
 
-        /* Blocks */
         .b1 { top: 20%; left: 20%; background-image: var(--block-grass); }
         .b2 { bottom: 20%; left: 25%; background-image: var(--block-dirt); }
         .b3 { top: 15%; right: 20%; background-image: var(--block-command); }
         .b4 { bottom: 15%; right: 25%; background-image: var(--block-steve); }
         .b5 { top: 45%; left: 15%; background-image: var(--block-diamond); }
         .b6 { top: 50%; right: 15%; background-image: var(--block-stone); }
-
-        /* Items */
         .i1 { top: 35%; left: 30%; background-image: var(--item-totem); filter: drop-shadow(0 0 10px #ffea00); }
         .i2 { bottom: 35%; left: 35%; background-image: var(--item-sword); transform: rotate(-45deg); }
         .i3 { top: 30%; right: 30%; background-image: var(--item-cake); }
@@ -66,32 +78,76 @@
 
         @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
 
-        /* UI */
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; }
-        
-        /* JAYESH_IRL: Slightly Bigger */
         h1 { font-family: 'Inter', sans-serif; font-size: 6.5rem; font-weight: 900; letter-spacing: -3px; }
-        
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
         .sub-heading { font-size: 2rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
 
         .btn-group { display: flex; flex-direction: column; gap: 10px; pointer-events: auto; width: 220px; margin: 0 auto; }
-        
         .btn {
             text-decoration: none; color: white; padding: 10px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.08); 
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 1.3rem; cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px;
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.3rem; cursor: pointer;
         }
         .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
 
+        /* --- SECTION 2: POLAROIDS --- */
+        .gallery-section {
+            background: #0a0a0a;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            place-items: center;
+            z-index: 20;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 45px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: rotate(var(--r));
+            transition: 0.4s ease;
+            width: 250px;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 30;
+        }
+
+        /* Placeholder image style */
+        .img-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 3rem;
+        }
+
+        .polaroid span {
+            color: #333;
+            font-size: 1.2rem;
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* UI Utilities */
         .music-control { position: fixed; top: 30px; right: 30px; z-index: 100; cursor: pointer; width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); pointer-events: auto; }
-        #canvas { position: absolute; top: 0; left: 0; z-index: 4; pointer-events: none; }
+        #canvas { position: fixed; top: 0; left: 0; z-index: 4; pointer-events: none; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        
+        .scroll-hint {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            animation: bounce 2s infinite; opacity: 0.6; font-size: 1.2rem;
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);} 40% {transform: translateY(-10px) translateX(-50%);} 60% {transform: translateY(-5px) translateX(-50%);} }
     </style>
 </head>
 <body>
@@ -99,34 +155,56 @@
     <div class="music-control" id="music-btn"><i class="fa-solid fa-music"></i></div>
     <audio id="bg-music" loop><source src="track.mp3" type="audio/mpeg"></audio>
 
-    <div class="bg-container">
-        <div class="layer background-base" id="bg-base"></div>
-        <div class="layer block-layer" id="block-layer">
-            <div class="mc-obj block-type b1"></div>
-            <div class="mc-obj block-type b2"></div>
-            <div class="mc-obj block-type b3"></div>
-            <div class="mc-obj block-type b4"></div>
-            <div class="mc-obj block-type b5"></div>
-            <div class="mc-obj block-type b6"></div>
-            <div class="mc-obj item-type i1"></div>
-            <div class="mc-obj item-type i2"></div>
-            <div class="mc-obj item-type i3"></div>
-            <div class="mc-obj item-type i4"></div>
-        </div>
-        <div class="layer parallax-layer" id="fg-layer"></div>
-    </div>
-
     <canvas id="canvas"></canvas>
 
-    <div class="container">
-        <h1 id="title"><span>JAYESH_IRL</span></h1>
-        <div class="sub-heading">The Videogame of Life</div>
-        <div class="btn-group">
-            <a href="tel:+919959297618" class="btn"><i class="fa-solid fa-phone"></i> CALL</a>
-            <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn"><i class="fa-brands fa-instagram"></i> INSTA</a>
-            <div class="btn" onclick="copyDiscord()"><i class="fa-brands fa-discord"></i> DISCORD</div>
+    <section class="hero-section">
+        <div class="bg-container">
+            <div class="layer background-base" id="bg-base"></div>
+            <div class="layer block-layer" id="block-layer">
+                <div class="mc-obj block-type b1"></div>
+                <div class="mc-obj block-type b2"></div>
+                <div class="mc-obj block-type b3"></div>
+                <div class="mc-obj block-type b4"></div>
+                <div class="mc-obj block-type b5"></div>
+                <div class="mc-obj block-type b6"></div>
+                <div class="mc-obj item-type i1"></div>
+                <div class="mc-obj item-type i2"></div>
+                <div class="mc-obj item-type i3"></div>
+                <div class="mc-obj item-type i4"></div>
+            </div>
+            <div class="layer parallax-layer" id="fg-layer"></div>
         </div>
-    </div>
+
+        <div class="container">
+            <h1 id="title"><span>JAYESH_IRL</span></h1>
+            <div class="sub-heading">The Videogame of Life</div>
+            <div class="btn-group">
+                <a href="tel:+919959297618" class="btn"><i class="fa-solid fa-phone"></i> CALL</a>
+                <a href="https://instagram.com/jayesh_irl" target="_blank" class="btn"><i class="fa-brands fa-instagram"></i> INSTA</a>
+                <div class="btn" onclick="copyDiscord()"><i class="fa-brands fa-discord"></i> DISCORD</div>
+            </div>
+        </div>
+        <div class="scroll-hint">SCROLL DOWN ↓</div>
+    </section>
+
+    <section class="gallery-section">
+        <div class="polaroid" style="--r: -3deg;">
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i></div>
+            <span>MEMORIES</span>
+        </div>
+        <div class="polaroid" style="--r: 4deg;">
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i></div>
+            <span>MOMENTS</span>
+        </div>
+        <div class="polaroid" style="--r: -2deg;">
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i></div>
+            <span>ADVENTURE</span>
+        </div>
+        <div class="polaroid" style="--r: 6deg;">
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i></div>
+            <span>LEVEL_UP</span>
+        </div>
+    </section>
 
     <script>
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
@@ -187,7 +265,7 @@
 
             createStar();
             stars.forEach((s, index) => {
-                s.x += s.speed; s.y += s.speed; // Adjusted direction
+                s.x += s.speed; s.y += s.speed;
                 s.opacity -= 0.02;
                 if (s.opacity <= 0) stars.splice(index, 1);
                 ctx.strokeStyle = `rgba(255, 255, 255, ${s.opacity})`;
