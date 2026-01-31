@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jayeshirl</title>
-    <link rel="icon" type="image/png" href=signature.png>
+    <link rel="icon" type="image/png" href= signature.png>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
@@ -42,6 +42,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
         body { background-color: #030303; color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
+        /* --- SIGNATURE POSITIONING --- */
         #signature {
             width: 140px;
             height: auto;
@@ -52,7 +53,8 @@
             pointer-events: none;
             will-change: transform, top, bottom;
         }
-        .sig-initial { position: absolute; top: 8%; left: 50%; transform: translateX(-50%) scale(1.4); }
+        /* Moved top from 8% to 18% to bring it closer to the heading */
+        .sig-initial { position: absolute; top: 18%; left: 50%; transform: translateX(-50%) scale(1.4); }
         .sig-fixed { position: fixed; top: auto; bottom: 30px; left: 30px; transform: translateX(0) scale(0.85); }
 
         section { min-height: 100vh; width: 100vw; position: relative; display: flex; justify-content: center; align-items: center; flex-direction: column; }
@@ -92,7 +94,7 @@
         .sub-heading { font-size: 2.5rem; color: var(--primary); text-transform: uppercase; margin-top: 25px; margin-bottom: 35px; }
 
         .hero-btn-group { display: flex; flex-direction: column; gap: 12px; pointer-events: auto; width: 220px; margin: 0 auto; }
-        .btn { text-decoration: none; color: white; padding: 12px 20px; border: 1px solid var(--glass-border); border-radius: 50px; background: var(--glass); backdrop-filter: blur(20px); transition: 0.3s transform, 0.3s background; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; cursor: pointer; }
+        .btn { text-decoration: none; color: white; padding: 12px 20px; border: 1px solid var(--glass-border); border-radius: 50px; background: var(--glass); backdrop-filter: blur(200px); transition: 0.3s transform, 0.3s background; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; cursor: pointer; }
         .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.05); border-color: var(--primary); }
 
         .gallery-section { 
@@ -183,7 +185,6 @@
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
         let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
 
-        // Optimized Parallax via RequestAnimationFrame
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
             mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
@@ -205,7 +206,6 @@
             signature.className = (window.scrollY > 60) ? 'sig-fixed' : 'sig-initial';
         }, { passive: true });
 
-        // Scroll text logic optimized
         const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
         const scrollTextElement = document.getElementById('scroll-text');
         const infoContainer = document.querySelector('.info-text-container');
@@ -217,7 +217,6 @@
             scrollTextElement.textContent = scrollMessage.substring(0, Math.floor(scrollMessage.length * progress));
         }, { passive: true });
 
-        // Optimized Canvas
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { alpha: true });
         let particles = [];
@@ -271,7 +270,7 @@
         function initCanvas() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = []; 
-            const count = window.innerWidth < 768 ? 40 : 70; // Lower count on mobile
+            const count = window.innerWidth < 768 ? 40 : 70;
             for(let i=0; i<count; i++) particles.push(new Particle());
         }
 
