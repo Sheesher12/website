@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jayeshirl</title>
-    <link rel="icon" type="image/png" href= favicon-removebg-preview.png>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
@@ -35,6 +35,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
         body { background-color: #050505; color: var(--text); overflow-x: hidden; }
 
+        /* --- SIGNATURE (Top Left) --- */
+        .signature-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            mix-blend-mode: difference; /* Inverts color relative to background */
+            pointer-events: none;
+        }
+        .signature-img {
+            width: 120px; /* Adjust size as needed */
+            height: auto;
+            display: block;
+            filter: invert(1); /* Ensures the base is white so 'difference' works properly on black */
+        }
+
         section { min-height: 100vh; width: 100vw; position: relative; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 
         /* --- HERO --- */
@@ -45,6 +61,7 @@
         .block-layer { z-index: 5; width: 100%; height: 100%; position: absolute; }
         .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.5; }
 
+        /* --- MC OBJECTS --- */
         .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); animation: floatObj 6s ease-in-out infinite; }
         .block-type { width: 65px; height: 65px; }
         .item-type { width: 50px; height: 50px; }
@@ -64,9 +81,9 @@
         @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-30px); } }
 
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; }
-        h1 { font-family: 'Inter', sans-serif; font-size: 6.5rem; font-weight: 900; letter-spacing: -3px; }
+        h1 { font-family: 'Inter', sans-serif; font-size: 8rem; font-weight: 900; letter-spacing: -4px; } /* Bigger size */
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
-        .sub-heading { font-size: 2rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
+        .sub-heading { font-size: 2.2rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
 
         .btn-group { display: flex; flex-direction: column; gap: 10px; pointer-events: auto; width: 220px; margin: 0 auto; }
         .btn { text-decoration: none; color: white; padding: 10px 20px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.3rem; cursor: pointer; }
@@ -99,18 +116,17 @@
 
         .music-control { position: fixed; top: 30px; right: 30px; z-index: 100; cursor: pointer; width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); pointer-events: auto; transition: 0.3s; }
         #canvas { position: fixed; top: 0; left: 0; z-index: 4; pointer-events: none; }
-        
-        /* Hidden YT Player */
-        #youtube-player { position: absolute; visibility: hidden; pointer-events: none; }
-        
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
     </style>
 </head>
 <body>
 
+    <div class="signature-container">
+        <img src= signature.png alt="Signature" class="signature-img">
+    </div>
+
     <div class="music-control" id="music-btn"><i class="fa-solid fa-music" id="music-icon"></i></div>
-    <div id="youtube-player"></div>
-    
+    <audio id="bg-music" loop><source src= track.mp3 type="audio/mpeg"></audio>
     <canvas id="canvas"></canvas>
 
     <div id="main-content">
@@ -175,7 +191,6 @@
         </section>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
         const polaroids = document.querySelectorAll('.polaroid');
@@ -210,40 +225,20 @@
         }
         window.addEventListener('scroll', updateScrollText);
 
-        // --- YOUTUBE MUSIC PLAYER ---
-        let player;
-        const videoIds = ['jfKfPfyJRdk', 'jfKfPfyJRdk', '5qap5aO4i9A', '7NOSDKb0HlU']; // Add your favorite lofi IDs here
+        // Music Logic
         const musicBtn = document.getElementById('music-btn');
         const musicIcon = document.getElementById('music-icon');
-        let isPlaying = false;
-
-        function onYouTubeIframeAPIReady() {
-            const randomId = videoIds[Math.floor(Math.random() * videoIds.length)];
-            player = new YT.Player('youtube-player', {
-                height: '0', width: '0',
-                videoId: randomId,
-                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': randomId },
-                events: { 'onStateChange': onPlayerStateChange }
-            });
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
+        const bgMusic = document.getElementById('bg-music');
+        
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
                 musicBtn.style.borderColor = "var(--primary)";
                 musicIcon.classList.replace('fa-music', 'fa-pause');
-                isPlaying = true;
             } else {
+                bgMusic.pause();
                 musicBtn.style.borderColor = "rgba(255,255,255,0.2)";
                 musicIcon.classList.replace('fa-pause', 'fa-music');
-                isPlaying = false;
-            }
-        }
-
-        musicBtn.addEventListener('click', () => {
-            if (!isPlaying) {
-                player.playVideo();
-            } else {
-                player.pauseVideo();
             }
         });
 
@@ -271,4 +266,3 @@
     </script>
 </body>
 </html>
-
