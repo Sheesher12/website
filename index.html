@@ -38,17 +38,17 @@
         /* --- SIGNATURE (Top Left) --- */
         .signature-container {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 25px;
+            left: 25px;
             z-index: 1000;
-            mix-blend-mode: difference; /* Inverts color relative to background */
             pointer-events: none;
         }
         .signature-img {
-            width: 120px; /* Adjust size as needed */
+            width: 130px; 
             height: auto;
             display: block;
-            filter: invert(1); /* Ensures the base is white so 'difference' works properly on black */
+            /* Added a shadow so it stays visible even on lighter images */
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
         section { min-height: 100vh; width: 100vw; position: relative; display: flex; justify-content: center; align-items: center; flex-direction: column; }
@@ -81,9 +81,9 @@
         @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-30px); } }
 
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; }
-        h1 { font-family: 'Inter', sans-serif; font-size: 8rem; font-weight: 900; letter-spacing: -4px; } /* Bigger size */
+        h1 { font-family: 'Inter', sans-serif; font-size: 8.5rem; font-weight: 900; letter-spacing: -4px; }
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
-        .sub-heading { font-size: 2.2rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
+        .sub-heading { font-size: 2.3rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
 
         .btn-group { display: flex; flex-direction: column; gap: 10px; pointer-events: auto; width: 220px; margin: 0 auto; }
         .btn { text-decoration: none; color: white; padding: 10px 20px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.3rem; cursor: pointer; }
@@ -122,11 +122,11 @@
 <body>
 
     <div class="signature-container">
-        <img src= signature.png alt="Signature" class="signature-img">
+        <img src="signature.png" alt="Signature" class="signature-img">
     </div>
 
     <div class="music-control" id="music-btn"><i class="fa-solid fa-music" id="music-icon"></i></div>
-    <audio id="bg-music" loop><source src= track.mp3 type="audio/mpeg"></audio>
+    <audio id="bg-music" loop><source src="track.mp3" type="audio/mpeg"></audio>
     <canvas id="canvas"></canvas>
 
     <div id="main-content">
@@ -201,7 +201,7 @@
             layers.base.style.transform = `translate(${x * -15}px, ${y * -15}px)`;
             layers.blocks.style.transform = `translate(${x * -40}px, ${y * -40}px)`;
             layers.fg.style.transform = `translate(${x * -60}px, ${y * -60}px)`;
-            layers.title.style.transform = `translate(${x * 15}px, ${y * 15}px)`;
+            layers.title.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
             polaroids.forEach(p => {
                 const style = p.getAttribute('style');
                 const speed = style.match(/--p-speed: ([-]?\d+)/)[1];
@@ -225,7 +225,6 @@
         }
         window.addEventListener('scroll', updateScrollText);
 
-        // Music Logic
         const musicBtn = document.getElementById('music-btn');
         const musicIcon = document.getElementById('music-icon');
         const bgMusic = document.getElementById('bg-music');
@@ -242,7 +241,6 @@
             }
         });
 
-        // Particle Background
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
