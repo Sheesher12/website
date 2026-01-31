@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jayeshirl</title>
-    <link rel="icon" type="image/png" href= favicon-removebg-preview.png>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     
@@ -15,120 +15,82 @@
             --pixel-font: 'VT323', monospace;
             --bg-image: url(yt.png); 
             --fg-image: url(yat.png);
+            /* Ensure these paths are correct */
             --block-grass: url(grass.png);
             --block-dirt: url(dirt.png);
             --block-command: url(command.png);
             --block-steve: url(steve.png);
             --block-diamond: url(diamond.png);
             --block-stone: url(stone.png);
+            --item-totem: url(totem.png);
+            --item-sword: url(sword.png);
+            --item-cake: url(cake.png);
+            --item-pickaxe: url(pickaxe.png);
         }
 
-        /* --- NATIVE SMOOTH SCROLLING --- */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* --- LIQUID GLASS SCROLLBAR --- */
+        html { scroll-behavior: smooth; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-        ::-webkit-scrollbar-thumb { 
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
         body { background-color: #050505; color: var(--text); overflow-x: hidden; }
 
-        section {
-            min-height: 100vh; width: 100vw;
-            position: relative;
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-        }
+        section { min-height: 100vh; width: 100vw; position: relative; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 
         /* --- HERO --- */
         .hero-section { overflow: hidden; }
         .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
         .layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; will-change: transform; }
         .background-base { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image); z-index: 1; }
-        .block-layer { z-index: 5; }
+        .block-layer { z-index: 5; width: 100%; height: 100%; position: absolute; }
         .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.5; }
 
+        /* --- MC OBJECTS --- */
         .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); animation: floatObj 6s ease-in-out infinite; }
         .block-type { width: 65px; height: 65px; }
-        .b1 { top: 20%; left: 20%; background-image: var(--block-grass); }
-        .b2 { bottom: 20%; left: 25%; background-image: var(--block-dirt); }
-        .b3 { top: 15%; right: 20%; background-image: var(--block-command); }
-        .b4 { bottom: 15%; right: 25%; background-image: var(--block-steve); }
-        .b5 { top: 45%; left: 15%; background-image: var(--block-diamond); }
-        .b6 { top: 50%; right: 15%; background-image: var(--block-stone); }
+        .item-type { width: 50px; height: 50px; }
 
-        @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
+        /* Distributed Positions */
+        .b1 { top: 15%; left: 10%; background-image: var(--block-grass); }
+        .b2 { bottom: 15%; left: 15%; background-image: var(--block-dirt); animation-delay: 1s; }
+        .b3 { top: 10%; right: 10%; background-image: var(--block-command); animation-delay: 2s; }
+        .b4 { bottom: 10%; right: 15%; background-image: var(--block-steve); animation-delay: 3s; }
+        .b5 { top: 40%; left: 5%; background-image: var(--block-diamond); animation-delay: 1.5s; }
+        .b6 { top: 45%; right: 5%; background-image: var(--block-stone); animation-delay: 2.5s; }
+        
+        .i1 { top: 25%; left: 25%; background-image: var(--item-totem); animation-delay: 0.5s; }
+        .i2 { bottom: 25%; left: 30%; background-image: var(--item-sword); transform: rotate(-45deg); animation-delay: 1.2s; }
+        .i3 { top: 20%; right: 25%; background-image: var(--item-cake); animation-delay: 1.8s; }
+        .i4 { bottom: 20%; right: 30%; background-image: var(--item-pickaxe); animation-delay: 0.8s; }
+
+        @keyframes floatObj { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-30px); } }
 
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; }
         h1 { font-family: 'Inter', sans-serif; font-size: 6.5rem; font-weight: 900; letter-spacing: -3px; }
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
         .sub-heading { font-size: 2rem; color: var(--primary); text-transform: uppercase; margin-bottom: 30px; }
 
-        /* --- BUTTONS --- */
         .btn-group { display: flex; flex-direction: column; gap: 10px; pointer-events: auto; width: 220px; margin: 0 auto; }
-        .btn {
-            text-decoration: none; color: white; padding: 10px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px;
-            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.3rem; cursor: pointer;
-        }
+        .btn { text-decoration: none; color: white; padding: 10px 20px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.3rem; cursor: pointer; }
         .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
 
-        /* --- SCROLL INDICATOR --- */
-        .mouse-scroll {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0.7; z-index: 10;
-        }
+        .mouse-scroll { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); opacity: 0.7; z-index: 10; }
         .mouse { width: 26px; height: 42px; border: 2px solid #fff; border-radius: 20px; position: relative; }
         .wheel { width: 4px; height: 8px; background: #fff; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); border-radius: 2px; animation: scrollAnim 1.5s infinite; }
         @keyframes scrollAnim { 0% { opacity: 1; top: 8px; } 100% { opacity: 0; top: 20px; } }
 
-        /* --- GALLERY SECTION --- */
-        .gallery-section {
-            background: rgba(10, 10, 10, 0.45);
-            padding: 100px 20px; z-index: 20; backdrop-filter: blur(6px);
-            display: flex; flex-direction: column; align-items: center; perspective: 1000px;
-        }
-
-        .polaroid-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 50px; place-items: center; width: 100%; max-width: 1100px; margin-bottom: 120px;
-            transform-style: preserve-3d;
-        }
-
+        /* --- GALLERY --- */
+        .gallery-section { background: rgba(10, 10, 10, 0.45); padding: 100px 20px; z-index: 20; backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; perspective: 1000px; }
+        .polaroid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; place-items: center; width: 100%; max-width: 1100px; margin-bottom: 120px; transform-style: preserve-3d; }
         .polaroid-wrapper { position: relative; text-align: center; }
-
-        .polaroid {
-            background: white; padding: 10px 10px 30px 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(var(--r));
-            transition: transform 0.2s ease-out; width: 200px; position: relative; overflow: hidden;
-        }
-        
+        .polaroid { background: white; padding: 10px 10px 30px 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(var(--r)); transition: transform 0.2s ease-out; width: 200px; position: relative; overflow: hidden; }
         .img-placeholder { width: 100%; height: 160px; background: #222; display: flex; align-items: center; justify-content: center; color: #444; font-size: 2rem; overflow: hidden; }
         .img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
-
-        .year-label {
-            display: block; margin-top: 15px; font-size: 1.8rem; color: var(--primary);
-            opacity: 0; transform: translateY(10px); transition: 0.4s ease;
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
-        }
+        .year-label { display: block; margin-top: 15px; font-size: 1.8rem; color: var(--primary); opacity: 0; transform: translateY(10px); transition: 0.4s ease; text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); }
         .polaroid-wrapper:hover .year-label { opacity: 1; transform: translateY(0); }
 
-        /* --- GLASS TEXT --- */
-        .info-text-container {
-            width: 90%; max-width: 1100px; min-height: 180px; text-align: center; margin-bottom: 100px;
-            padding: 40px; border-radius: 30px; background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
+        .info-text-container { width: 90%; max-width: 1100px; min-height: 180px; text-align: center; margin-bottom: 100px; padding: 40px; border-radius: 30px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
         .info-text { font-size: 1.5rem; line-height: 1.6; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.95); text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); display: inline; }
         .cursor { display: inline-block; width: 10px; height: 1.5rem; background: var(--primary); margin-left: 5px; animation: blink 0.8s infinite; vertical-align: middle; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -138,7 +100,7 @@
         .footer-socials a { color: var(--primary); text-decoration: none; transition: 0.3s; opacity: 0.6; }
         .footer-socials a:hover { color: white; transform: translateY(-5px); opacity: 1; }
 
-        .music-control { position: fixed; top: 30px; right: 30px; z-index: 100; cursor: pointer; width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); pointer-events: auto; }
+        .music-control { position: fixed; top: 30px; right: 30px; z-index: 100; cursor: pointer; width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); pointer-events: auto; transition: 0.3s; }
         #canvas { position: fixed; top: 0; left: 0; z-index: 4; pointer-events: none; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
     </style>
@@ -146,7 +108,7 @@
 <body>
 
     <div class="music-control" id="music-btn"><i class="fa-solid fa-music"></i></div>
-    <audio id="bg-music" loop><source src="track.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-music" loop preload="auto"><source src="track.mp3" type="audio/mpeg"></audio>
     <canvas id="canvas"></canvas>
 
     <div id="main-content">
@@ -157,6 +119,8 @@
                     <div class="mc-obj block-type b1"></div><div class="mc-obj block-type b2"></div>
                     <div class="mc-obj block-type b3"></div><div class="mc-obj block-type b4"></div>
                     <div class="mc-obj block-type b5"></div><div class="mc-obj block-type b6"></div>
+                    <div class="mc-obj item-type i1"></div><div class="mc-obj item-type i2"></div>
+                    <div class="mc-obj item-type i3"></div><div class="mc-obj item-type i4"></div>
                 </div>
                 <div class="layer parallax-layer" id="fg-layer"></div>
             </div>
@@ -213,7 +177,6 @@
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
         const polaroids = document.querySelectorAll('.polaroid');
 
-        // Mouse Parallax
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
             const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
@@ -231,7 +194,6 @@
 
         function copyDiscord() { navigator.clipboard.writeText("sheesher_"); alert("Copied Discord ID!"); }
 
-        // Fast Type on Scroll
         const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
         const scrollTextElement = document.getElementById('scroll-text');
         
@@ -244,6 +206,22 @@
             scrollTextElement.textContent = scrollMessage.substring(0, Math.floor(scrollMessage.length * progress));
         }
         window.addEventListener('scroll', updateScrollText);
+
+        // Music Logic
+        const musicBtn = document.getElementById('music-btn');
+        const bgMusic = document.getElementById('bg-music');
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    musicBtn.style.borderColor = "#00d2ff";
+                    musicBtn.style.color = "#00d2ff";
+                }).catch(err => console.log("Audio play failed:", err));
+            } else {
+                bgMusic.pause();
+                musicBtn.style.borderColor = "rgba(255,255,255,0.2)";
+                musicBtn.style.color = "white";
+            }
+        });
 
         // Particle Background
         const canvas = document.getElementById('canvas');
@@ -266,10 +244,6 @@
         }
         window.addEventListener('resize', init);
         init(); animate();
-
-        const musicBtn = document.getElementById('music-btn');
-        const bgMusic = document.getElementById('bg-music');
-        musicBtn.addEventListener('click', () => { bgMusic.paused ? (bgMusic.play(), musicBtn.style.borderColor = "#00d2ff") : (bgMusic.pause(), musicBtn.style.borderColor = "rgba(255,255,255,0.2)"); });
     </script>
 </body>
 </html>
