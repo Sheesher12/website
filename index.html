@@ -27,13 +27,13 @@
             --item-pickaxe: url(pickaxe.png);
         }
 
-        html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
         body { background-color: #050505; color: var(--text); overflow-x: hidden; }
 
         section {
             min-height: 100vh; width: 100vw;
-            scroll-snap-align: start; position: relative;
+            position: relative;
             display: flex; justify-content: center; align-items: center; flex-direction: column;
         }
 
@@ -75,34 +75,43 @@
         }
         .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
 
-        /* --- GALLERY & TYPEWRITER --- */
+        /* --- GALLERY & GLASS TEXT --- */
         .gallery-section {
-            background: rgba(10, 10, 10, 0.85); 
-            padding: 100px 40px; z-index: 20; backdrop-filter: blur(5px);
+            background: rgba(10, 10, 10, 0.7); 
+            padding: 100px 20px; z-index: 20; backdrop-filter: blur(8px);
         }
 
         .polaroid-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 40px; place-items: center; width: 100%; max-width: 1200px; margin-bottom: 80px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px; place-items: center; width: 100%; max-width: 1100px; margin-bottom: 100px;
         }
 
         .polaroid {
-            background: white; padding: 12px 12px 35px 12px;
+            background: white; padding: 10px 10px 30px 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(var(--r));
-            transition: 0.4s ease; width: 220px;
+            transition: 0.4s ease; width: 200px;
         }
         .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 30; }
-        .img-placeholder { width: 100%; height: 180px; background: #222; display: flex; align-items: center; justify-content: center; color: #444; font-size: 2.5rem; }
+        .img-placeholder { width: 100%; height: 160px; background: #222; display: flex; align-items: center; justify-content: center; color: #444; font-size: 2rem; }
 
-        .info-text {
-            max-width: 800px; text-align: center; font-size: 2.2rem; line-height: 1.4;
-            color: var(--primary); letter-spacing: 1px; padding: 0 20px;
-            margin-bottom: 60px; min-height: 200px; /* Prevents layout jump */
+        /* Liquid Glass Text Effect */
+        .info-text-container {
+            width: 90%; max-width: 1200px; /* More horizontal */
+            min-height: 150px; text-align: center;
+            margin-bottom: 100px;
         }
 
-        /* Cursor blinking effect */
-        .cursor { display: inline-block; width: 12px; height: 2px; background-color: var(--primary); margin-left: 5px; animation: blink 1s infinite; vertical-align: middle; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .info-text {
+            font-size: 1.6rem; line-height: 1.5; letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.2); /* Base transparency */
+            background: linear-gradient(to right, #fff, var(--primary), #fff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .revealed-text { color: rgba(255, 255, 255, 0.95); text-shadow: 0 0 15px rgba(0, 210, 255, 0.6); }
 
         /* --- FOOTER --- */
         footer { width: 100%; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
@@ -156,7 +165,9 @@
             <div class="polaroid" style="--r: 6deg;"><div class="img-placeholder"><i class="fa-solid fa-image"></i></div></div>
         </div>
 
-        <div class="info-text" id="typewriter-text"></div>
+        <div class="info-text-container">
+            <p class="info-text" id="scroll-text"></p>
+        </div>
 
         <footer>
             <div class="footer-socials">
@@ -182,32 +193,26 @@
 
         function copyDiscord() { navigator.clipboard.writeText("sheesher_"); alert("Copied: sheesher_"); }
 
-        // --- TYPEWRITER ON SCROLL ---
-        const message = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
-        const textElement = document.getElementById('typewriter-text');
-        let charIndex = 0;
-        let isTypingStarted = false;
-
-        function typeWriter() {
-            if (charIndex < message.length) {
-                textElement.innerHTML = message.substring(0, charIndex + 1) + '<span class="cursor"></span>';
-                charIndex++;
-                setTimeout(typeWriter, 35); // Typing speed in ms
-            } else {
-                textElement.innerHTML = message + '<span class="cursor"></span>';
-            }
+        // --- SCROLL-BASED TYPEWRITER ---
+        const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
+        const scrollTextElement = document.getElementById('scroll-text');
+        
+        function updateScrollText() {
+            const container = document.querySelector('.gallery-section');
+            const rect = container.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Calculate progress (0 to 1) based on how much of the section has been scrolled
+            let progress = (windowHeight - rect.top) / (rect.height);
+            progress = Math.max(0, Math.min(1, progress));
+            
+            const charsToShow = Math.floor(scrollMessage.length * progress);
+            
+            scrollTextElement.innerHTML = `<span class="revealed-text">${scrollMessage.substring(0, charsToShow)}</span>${scrollMessage.substring(charsToShow)}`;
         }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !isTypingStarted) {
-                    isTypingStarted = true;
-                    typeWriter();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(textElement);
+        window.addEventListener('scroll', updateScrollText);
+        updateScrollText();
 
         // --- PARTICLES & STARS ---
         const canvas = document.getElementById('canvas');
