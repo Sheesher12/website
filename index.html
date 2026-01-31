@@ -23,15 +23,17 @@
             --item-totem: url(totem.png);
             --item-sword: url(sword.png);
             --item-cake: url(cake.png);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
         html { scroll-behavior: smooth; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--pixel-font); }
-        body { background-color: #050505; color: var(--text); overflow-x: hidden; }
+        body { background-color: #030303; color: var(--text); overflow-x: hidden; }
 
         /* --- SIGNATURE --- */
         #signature {
@@ -40,7 +42,7 @@
             display: block;
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 9999;
-            filter: drop-shadow(0 2px 12px rgba(0,0,0,0.9));
+            filter: drop-shadow(0 2px 15px rgba(0, 210, 255, 0.4));
             pointer-events: none;
         }
         .sig-initial { position: absolute; top: 8%; left: 50%; transform: translateX(-50%) scale(1.4); }
@@ -52,13 +54,14 @@
         .hero-section { overflow: hidden; }
         .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
         .layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; will-change: transform; }
-        .background-base { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image); z-index: 1; }
+        .background-base { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image); z-index: 1; }
         .block-layer { z-index: 5; width: 100%; height: 100%; position: absolute; }
-        .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.5; }
+        .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.4; }
 
         /* --- MC OBJECTS --- */
-        .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); animation: floatSpin 6s ease-in-out infinite; }
-        .block-type { width: 60px; height: 60px; }
+        .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; animation: floatSpin 6s ease-in-out infinite; }
+        .block-type { width: 60px; height: 60px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+        .i-glow { filter: drop-shadow(0 0 10px rgba(157, 80, 187, 0.6)) drop-shadow(0 0 20px rgba(0, 210, 255, 0.4)); }
         
         .b1 { top: 25%; left: 20%; background-image: var(--block-grass); }
         .b2 { bottom: 25%; left: 22%; background-image: var(--block-dirt); animation-delay: 1s; }
@@ -75,37 +78,52 @@
             50% { transform: translateY(-25px) rotate(15deg); } 
         }
 
+        /* --- HERO CONTENT --- */
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; padding-top: 120px; }
         h1 { font-family: 'Inter', sans-serif; font-size: 9.5rem; font-weight: 900; letter-spacing: -6px; line-height: 0.8; }
         h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
         .sub-heading { font-size: 2.5rem; color: var(--primary); text-transform: uppercase; margin-top: 25px; margin-bottom: 35px; }
 
         .hero-btn-group { display: flex; flex-direction: column; gap: 12px; pointer-events: auto; width: 220px; margin: 0 auto; }
-        .btn { text-decoration: none; color: white; padding: 12px 20px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; cursor: pointer; }
-        .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        .btn { text-decoration: none; color: white; padding: 12px 20px; border: 1px solid var(--glass-border); border-radius: 50px; background: var(--glass); backdrop-filter: blur(20px); transition: 0.4s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; cursor: pointer; }
+        .btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 210, 255, 0.3); }
 
-        /* --- GALLERY --- */
-        .gallery-section { background: rgba(10, 10, 10, 0.65); padding: 120px 20px; z-index: 20; backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; perspective: 1000px; }
+        /* --- GALLERY & INFO --- */
+        .gallery-section { background: rgba(5, 5, 5, 0.7); padding: 120px 20px; z-index: 20; backdrop-filter: blur(25px); display: flex; flex-direction: column; align-items: center; }
         .polaroid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px; place-items: center; width: 100%; max-width: 1100px; margin-bottom: 120px; }
         
-        /* RESTORED YEAR LABELS */
         .polaroid-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-        .polaroid { background: white; padding: 10px 10px 35px 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: rotate(var(--r)); width: 220px; transition: 0.3s; }
-        .img-placeholder { width: 100%; height: 180px; background: #1a1a1a; overflow: hidden; }
+        .polaroid { background: white; padding: 10px 10px 35px 10px; box-shadow: 0 15px 45px rgba(0,0,0,0.8); transform: rotate(var(--r)); width: 220px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .img-placeholder { width: 100%; height: 180px; background: #000; overflow: hidden; }
         .img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
-        .year-label { display: block; margin-top: 15px; font-size: 1.8rem; color: var(--primary); opacity: 0; transform: translateY(10px); transition: 0.4s ease; text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); }
+        .year-label { display: block; margin-top: 15px; font-size: 1.8rem; color: var(--primary); opacity: 0; transform: translateY(10px); transition: 0.4s ease; }
         .polaroid-wrapper:hover .year-label { opacity: 1; transform: translateY(0); }
-        .polaroid-wrapper:hover .polaroid { transform: rotate(0deg) scale(1.05); }
+        .polaroid-wrapper:hover .polaroid { transform: rotate(0deg) scale(1.1); z-index: 100; }
 
-        .info-text-container { width: 80%; max-width: 850px; min-height: 120px; text-align: center; margin-bottom: 120px; padding: 40px; border-radius: 30px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); }
-        .info-text { font-size: 1.2rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9); }
+        .info-text-container { 
+            width: 85%; 
+            max-width: 850px; 
+            min-height: 120px; 
+            text-align: center; 
+            margin-bottom: 120px; 
+            padding: 45px; 
+            border-radius: 40px; 
+            background: rgba(255, 255, 255, 0.04); 
+            border: 1px solid var(--glass-border); 
+            backdrop-filter: blur(30px); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: floatGlass 5s ease-in-out infinite;
+        }
+        .info-text { font-size: 1.25rem; line-height: 1.7; color: rgba(255, 255, 255, 0.95); }
+
+        @keyframes floatGlass { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         footer { width: 100%; padding: 80px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
-        .footer-socials { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; font-size: 2rem; }
-        .footer-socials a { color: var(--primary); text-decoration: none; transition: 0.3s; opacity: 0.7; cursor: pointer; }
-        .footer-socials a:hover { color: white; transform: translateY(-5px); opacity: 1; }
+        .footer-socials { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; font-size: 2.2rem; }
+        .footer-socials a { color: var(--primary); text-decoration: none; transition: 0.3s; opacity: 0.6; cursor: pointer; }
+        .footer-socials a:hover { color: white; transform: scale(1.2); opacity: 1; }
 
-        .music-control { position: fixed; top: 30px; right: 30px; z-index: 10000; cursor: pointer; width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); }
+        .music-control { position: fixed; top: 30px; right: 30px; z-index: 10000; cursor: pointer; width: 45px; height: 45px; background: var(--glass); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
         #canvas { position: fixed; top: 0; left: 0; z-index: 4; pointer-events: none; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
     </style>
@@ -127,10 +145,10 @@
                     <div class="mc-obj block-type b2"></div>
                     <div class="mc-obj block-type b3"></div>
                     <div class="mc-obj block-type b4"></div>
-                    <div class="mc-obj i1"></div>
-                    <div class="mc-obj i2"></div>
-                    <div class="mc-obj i3"></div>
-                    <div class="mc-obj i4"></div>
+                    <div class="mc-obj i-glow i1"></div>
+                    <div class="mc-obj i-glow i2"></div>
+                    <div class="mc-obj i-glow i3"></div>
+                    <div class="mc-obj i-glow i4"></div>
                 </div>
                 <div class="layer parallax-layer" id="fg-layer"></div>
             </div>
@@ -176,7 +194,7 @@
                     <a onclick="copyDiscord()"><i class="fa-brands fa-discord"></i></a>
                     <a href="tel:+919959297618"><i class="fa-solid fa-phone"></i></a>
                 </div>
-                <p style="opacity: 0.5; font-size: 0.9rem;">Not affiliated with Mojang AB or Minecraft</p>
+                <p style="opacity: 0.4; font-size: 0.9rem; letter-spacing: 1px;">NOT AFFILIATED WITH MOJANG AB</p>
             </footer>
         </section>
     </div>
@@ -185,21 +203,22 @@
         const signature = document.getElementById('signature');
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 80) {
-                signature.className = 'sig-fixed';
-            } else {
-                signature.className = 'sig-initial';
-            }
-        });
-
-        document.addEventListener('mousemove', (e) => {
+        // Mouse tracking for interaction
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
             const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
             const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-            layers.base.style.transform = `translate(${x * -15}px, ${y * -15}px)`;
-            layers.blocks.style.transform = `translate(${x * -35}px, ${y * -35}px)`;
-            layers.fg.style.transform = `translate(${x * -55}px, ${y * -55}px)`;
-            layers.title.style.transform = `translate(${x * 15}px, ${y * 15}px)`;
+            layers.base.style.transform = `translate(${x * -12}px, ${y * -12}px)`;
+            layers.blocks.style.transform = `translate(${x * -30}px, ${y * -30}px)`;
+            layers.fg.style.transform = `translate(${x * -50}px, ${y * -50}px)`;
+            layers.title.style.transform = `translate(${x * 12}px, ${y * 12}px)`;
+        });
+
+        window.addEventListener('scroll', () => {
+            signature.className = (window.scrollY > 60) ? 'sig-fixed' : 'sig-initial';
         });
 
         function copyDiscord() { 
@@ -207,7 +226,7 @@
             alert("Discord ID 'sheesher_' copied!"); 
         }
 
-        const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
+        const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here. TLDR ; Coming soon";
         const scrollTextElement = document.getElementById('scroll-text');
         
         window.addEventListener('scroll', () => {
@@ -218,6 +237,110 @@
             scrollTextElement.textContent = scrollMessage.substring(0, Math.floor(scrollMessage.length * progress));
         });
 
+        // CANVAS: Stars, Shooting Stars, and Interactive Particles
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let shootingStars = [];
+
+        class Particle {
+            constructor() {
+                this.init();
+            }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.size = Math.random() * 2 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+            }
+            update() {
+                // Return to base position or drift
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                // Mouse Repulsion
+                let dx = mouseX - this.x;
+                let dy = mouseY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 150) {
+                    let force = (150 - distance) / 150;
+                    this.x -= dx / distance * force * 5;
+                    this.y -= dy / distance * force * 5;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.init();
+            }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = 0;
+                this.length = Math.random() * 80 + 20;
+                this.speed = Math.random() * 10 + 10;
+                this.opacity = 1;
+                this.active = true;
+            }
+            update() {
+                this.x -= this.speed;
+                this.y += this.speed;
+                this.opacity -= 0.02;
+                if (this.opacity <= 0) this.active = false;
+            }
+            draw() {
+                ctx.strokeStyle = `rgba(0, 210, 255, ${this.opacity})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.length, this.y - this.length);
+                ctx.stroke();
+            }
+        }
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for(let i=0; i<80; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            if (Math.random() < 0.01) shootingStars.push(new ShootingStar());
+            
+            shootingStars = shootingStars.filter(s => s.active);
+            shootingStars.forEach(s => {
+                s.update();
+                s.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
+
+        // Music
         const musicBtn = document.getElementById('music-btn');
         const bgMusic = document.getElementById('bg-music');
         musicBtn.addEventListener('click', () => {
@@ -229,28 +352,6 @@
                 document.getElementById('music-icon').classList.replace('fa-pause', 'fa-music');
             }
         });
-
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<60; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 1, speedX: (Math.random() - 0.5) * 3, speedY: (Math.random() - 0.5) * 3, opacity: Math.random() }); }
-        }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.speedX; p.y += p.speedY;
-                if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
-                if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-            });
-            requestAnimationFrame(animate);
-        }
-        window.addEventListener('resize', init);
-        init(); animate();
     </script>
 </body>
 </html>
-
