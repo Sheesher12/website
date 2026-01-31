@@ -11,6 +11,7 @@
     <style>
         :root {
             --primary: #00d2ff;
+            --secondary: #9d50bb;
             --text: #ffffff;
             --pixel-font: 'VT323', monospace;
             --bg-image: url(yt.png); 
@@ -52,36 +53,54 @@
 
         /* --- HERO & PARALLAX --- */
         .hero-section { overflow: hidden; }
-        .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
+        .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: cover; will-change: transform; }
         .background-base { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), var(--bg-image); z-index: 1; }
-        .block-layer { z-index: 5; width: 100%; height: 100%; position: absolute; }
         .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.4; }
 
-        /* --- MC OBJECTS --- */
-        .mc-obj { position: absolute; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; animation: floatSpin 6s ease-in-out infinite; }
-        .block-type { width: 60px; height: 60px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
-        .i-glow { filter: drop-shadow(0 0 10px rgba(157, 80, 187, 0.6)) drop-shadow(0 0 20px rgba(0, 210, 255, 0.4)); }
+        /* --- ORGANIZED MC OBJECTS --- */
+        .block-layer { 
+            z-index: 5; 
+            width: 100%; 
+            max-width: 1200px; /* Keeps items from drifting too wide */
+            height: 80vh; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .mc-obj { 
+            position: absolute; 
+            background-size: contain; 
+            background-repeat: no-repeat; 
+            image-rendering: pixelated; 
+            animation: floatSpin 6s ease-in-out infinite; 
+        }
         
-        .b1 { top: 25%; left: 20%; background-image: var(--block-grass); }
-        .b2 { bottom: 25%; left: 22%; background-image: var(--block-dirt); animation-delay: 1s; }
-        .b3 { top: 20%; right: 20%; background-image: var(--block-command); animation-delay: 2s; }
-        .b4 { bottom: 20%; right: 22%; background-image: var(--block-steve); animation-delay: 3s; }
+        /* Items positioned in a loose "ring" around the central text */
+        .b1 { top: 15%; left: 10%; background-image: var(--block-grass); width: 60px; height: 60px; }
+        .b2 { bottom: 15%; left: 12%; background-image: var(--block-dirt); width: 60px; height: 60px; animation-delay: 1s; }
+        .b3 { top: 10%; right: 10%; background-image: var(--block-command); width: 60px; height: 60px; animation-delay: 2s; }
+        .b4 { bottom: 10%; right: 12%; background-image: var(--block-steve); width: 60px; height: 60px; animation-delay: 3.5s; }
         
-        .i1 { top: 40%; left: 18%; width: 45px; height: 45px; background-image: var(--item-totem); animation-delay: 0.5s; }
-        .i2 { bottom: 35%; right: 25%; width: 45px; height: 45px; background-image: var(--item-sword); animation-delay: 1.5s; }
-        .i3 { top: 15%; left: 48%; width: 40px; height: 40px; background-image: var(--item-diamond); animation-delay: 2.5s; }
-        .i4 { bottom: 15%; left: 42%; width: 50px; height: 50px; background-image: var(--item-cake); animation-delay: 1.2s; }
+        .i1 { top: 40%; left: 5%; width: 45px; height: 45px; background-image: var(--item-totem); animation-delay: 0.5s; }
+        .i2 { bottom: 35%; right: 5%; width: 45px; height: 45px; background-image: var(--item-sword); animation-delay: 1.5s; }
+        .i3 { top: 5%; left: 45%; width: 40px; height: 40px; background-image: var(--item-diamond); animation-delay: 2.5s; }
+        .i4 { bottom: 5%; left: 42%; width: 50px; height: 50px; background-image: var(--item-cake); animation-delay: 1.2s; }
+
+        .i-glow { filter: drop-shadow(0 0 10px rgba(157, 80, 187, 0.5)) drop-shadow(0 0 20px rgba(0, 210, 255, 0.3)); }
 
         @keyframes floatSpin { 
             0%, 100% { transform: translateY(0px) rotate(0deg); } 
-            50% { transform: translateY(-25px) rotate(15deg); } 
+            50% { transform: translateY(-20px) rotate(10deg); } 
         }
 
         /* --- HERO CONTENT --- */
         .container { position: relative; z-index: 10; text-align: center; pointer-events: none; padding-top: 120px; }
         h1 { font-family: 'Inter', sans-serif; font-size: 9.5rem; font-weight: 900; letter-spacing: -6px; line-height: 0.8; }
-        h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #9d50bb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
+        h1 span { display: inline-block; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 5s linear infinite; }
         .sub-heading { font-size: 2.5rem; color: var(--primary); text-transform: uppercase; margin-top: 25px; margin-bottom: 35px; }
 
         .hero-btn-group { display: flex; flex-direction: column; gap: 12px; pointer-events: auto; width: 220px; margin: 0 auto; }
@@ -92,11 +111,24 @@
         .gallery-section { background: rgba(5, 5, 5, 0.7); padding: 120px 20px; z-index: 20; backdrop-filter: blur(25px); display: flex; flex-direction: column; align-items: center; }
         .polaroid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px; place-items: center; width: 100%; max-width: 1100px; margin-bottom: 120px; }
         
-        .polaroid-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
+        .polaroid-wrapper { 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            animation: polaroidFloat 7s ease-in-out infinite; 
+            animation-delay: var(--delay);
+        }
+        @keyframes polaroidFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
         .polaroid { background: white; padding: 10px 10px 35px 10px; box-shadow: 0 15px 45px rgba(0,0,0,0.8); transform: rotate(var(--r)); width: 220px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .img-placeholder { width: 100%; height: 180px; background: #000; overflow: hidden; }
         .img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
         .year-label { display: block; margin-top: 15px; font-size: 1.8rem; color: var(--primary); opacity: 0; transform: translateY(10px); transition: 0.4s ease; }
+        .polaroid-wrapper:hover { animation-play-state: paused; }
         .polaroid-wrapper:hover .year-label { opacity: 1; transform: translateY(0); }
         .polaroid-wrapper:hover .polaroid { transform: rotate(0deg) scale(1.1); z-index: 100; }
 
@@ -140,11 +172,11 @@
         <section class="hero-section">
             <div class="bg-container">
                 <div class="layer background-base" id="bg-base"></div>
-                <div class="layer block-layer" id="block-layer">
-                    <div class="mc-obj block-type b1"></div>
-                    <div class="mc-obj block-type b2"></div>
-                    <div class="mc-obj block-type b3"></div>
-                    <div class="mc-obj block-type b4"></div>
+                <div class="block-layer" id="block-layer">
+                    <div class="mc-obj b1"></div>
+                    <div class="mc-obj b2"></div>
+                    <div class="mc-obj b3"></div>
+                    <div class="mc-obj b4"></div>
                     <div class="mc-obj i-glow i1"></div>
                     <div class="mc-obj i-glow i2"></div>
                     <div class="mc-obj i-glow i3"></div>
@@ -166,19 +198,19 @@
 
         <section class="gallery-section">
             <div class="polaroid-grid">
-                <div class="polaroid-wrapper">
+                <div class="polaroid-wrapper" style="--delay: 0s;">
                     <div class="polaroid" style="--r: -3deg;"><div class="img-placeholder"><img src="placeholder1.jpg"></div></div>
                     <span class="year-label">2011</span>
                 </div>
-                <div class="polaroid-wrapper">
+                <div class="polaroid-wrapper" style="--delay: 1.5s;">
                     <div class="polaroid" style="--r: 4deg;"><div class="img-placeholder"><img src="placeholder2.jpg"></div></div>
                     <span class="year-label">2025</span>
                 </div>
-                <div class="polaroid-wrapper">
+                <div class="polaroid-wrapper" style="--delay: 0.8s;">
                     <div class="polaroid" style="--r: -2deg;"><div class="img-placeholder"><img src="placeholder3.jpg"></div></div>
                     <span class="year-label">2013</span>
                 </div>
-                <div class="polaroid-wrapper">
+                <div class="polaroid-wrapper" style="--delay: 2.2s;">
                     <div class="polaroid" style="--r: 6deg;"><div class="img-placeholder"><img src="placeholder4.jpg"></div></div>
                     <span class="year-label">2026</span>
                 </div>
@@ -203,16 +235,13 @@
         const signature = document.getElementById('signature');
         const layers = { base: document.getElementById('bg-base'), blocks: document.getElementById('block-layer'), fg: document.getElementById('fg-layer'), title: document.getElementById('title') };
 
-        // Mouse tracking for interaction
         let mouseX = 0, mouseY = 0;
         window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
+            mouseX = e.clientX; mouseY = e.clientY;
             const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
             const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
             layers.base.style.transform = `translate(${x * -12}px, ${y * -12}px)`;
-            layers.blocks.style.transform = `translate(${x * -30}px, ${y * -30}px)`;
+            layers.blocks.style.transform = `translate(-50%, -50%) translate(${x * -30}px, ${y * -30}px)`; // Preserves centering
             layers.fg.style.transform = `translate(${x * -50}px, ${y * -50}px)`;
             layers.title.style.transform = `translate(${x * 12}px, ${y * 12}px)`;
         });
@@ -226,7 +255,7 @@
             alert("Discord ID 'sheesher_' copied!"); 
         }
 
-        const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here. TLDR ; Coming soon";
+        const scrollMessage = "What's the point of this website you ask? Theres not much point for now, but after our exams I'm switching my main instagram account to a public one and I'm sure this'll help for engagement, whatever i post on instagram, edits, photos, moments, whatever it is? All gonna be on here";
         const scrollTextElement = document.getElementById('scroll-text');
         
         window.addEventListener('scroll', () => {
@@ -237,36 +266,27 @@
             scrollTextElement.textContent = scrollMessage.substring(0, Math.floor(scrollMessage.length * progress));
         });
 
-        // CANVAS: Stars, Shooting Stars, and Interactive Particles
+        // CANVAS
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         let shootingStars = [];
 
         class Particle {
-            constructor() {
-                this.init();
-            }
+            constructor() { this.init(); }
             init() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.baseX = this.x;
-                this.baseY = this.y;
                 this.size = Math.random() * 2 + 0.5;
                 this.opacity = Math.random() * 0.5 + 0.2;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
             }
             update() {
-                // Return to base position or drift
-                this.x += this.vx;
-                this.y += this.vy;
+                this.x += this.vx; this.y += this.vy;
                 if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-                // Mouse Repulsion
-                let dx = mouseX - this.x;
-                let dy = mouseY - this.y;
+                let dx = mouseX - this.x; let dy = mouseY - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < 150) {
                     let force = (150 - distance) / 150;
@@ -276,71 +296,49 @@
             }
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
 
         class ShootingStar {
-            constructor() {
-                this.init();
-            }
+            constructor() { this.init(); }
             init() {
-                this.x = Math.random() * canvas.width;
-                this.y = 0;
-                this.length = Math.random() * 80 + 20;
-                this.speed = Math.random() * 10 + 10;
-                this.opacity = 1;
-                this.active = true;
+                this.x = Math.random() * canvas.width; this.y = 0;
+                this.length = Math.random() * 100 + 50;
+                this.speed = Math.random() * 15 + 10;
+                this.opacity = 1; this.active = true;
             }
             update() {
-                this.x -= this.speed;
-                this.y += this.speed;
-                this.opacity -= 0.02;
+                this.x -= this.speed; this.y += this.speed;
+                this.opacity -= 0.015;
                 if (this.opacity <= 0) this.active = false;
             }
             draw() {
-                ctx.strokeStyle = `rgba(0, 210, 255, ${this.opacity})`;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x + this.length, this.y - this.length);
-                ctx.stroke();
+                let gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.length, this.y - this.length);
+                gradient.addColorStop(0, `rgba(0, 210, 255, ${this.opacity})`);
+                gradient.addColorStop(1, `rgba(157, 80, 187, 0)`);
+                ctx.strokeStyle = gradient; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x + this.length, this.y - this.length); ctx.stroke();
             }
         }
 
         function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<80; i++) particles.push(new Particle());
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = []; for(let i=0; i<80; i++) particles.push(new Particle());
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            if (Math.random() < 0.01) shootingStars.push(new ShootingStar());
-            
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (Math.random() < 0.008) shootingStars.push(new ShootingStar());
             shootingStars = shootingStars.filter(s => s.active);
-            shootingStars.forEach(s => {
-                s.update();
-                s.draw();
-            });
-
+            shootingStars.forEach(s => { s.update(); s.draw(); });
             requestAnimationFrame(animate);
         }
 
         window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animate();
+        initCanvas(); animate();
 
-        // Music
         const musicBtn = document.getElementById('music-btn');
         const bgMusic = document.getElementById('bg-music');
         musicBtn.addEventListener('click', () => {
