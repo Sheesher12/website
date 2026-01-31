@@ -11,220 +11,84 @@
             --nebula: #9d50bb;
             --text: #ffffff;
             --bg-image: url(yt.png); 
-            --fg-image: url(yat.png); 
+            --fg-image: url(yat.png);
+            /* MC Assets */
+            --block-grass: url(grass.png);
+            --block-dirt: url(dirt.png);
+            --block-log: url(log.png);
+            --block-stone: url(stone.png);
+            --block-diamond: url(diamond.png);
+            --block-command: url(command.png);
+            --block-steve: url(steve.png);
+            /* Items */
+            --item-totem: url('totem.png);
+            --item-sword: url('sword.png);
+            --item-cake: url('cake.png);
+            --item-pickaxe: url(pickaxe.png);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            background-color: #050505;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text);
-            opacity: 0;
-            animation: fadeInPage 1.5s ease-out forwards;
-        }
+        body { background-color: #050505; height: 100vh; width: 100vw; overflow: hidden; display: flex; justify-content: center; align-items: center; color: var(--text); opacity: 0; animation: fadeInPage 1.5s ease-out forwards; }
 
-        /* --- BACKGROUND ENGINE --- */
-        .bg-container {
-            position: fixed;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            z-index: 0;
-            pointer-events: none;
-            background: #050505;
-        }
+        /* --- PARALLAX ENGINE --- */
+        .bg-container { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; z-index: 0; pointer-events: none; }
+        .background-base, .parallax-layer, .block-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center center; background-size: cover; will-change: transform; transition: transform 0.6s cubic-bezier(0.1, 0.5, 0.2, 1); }
+        .background-base { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), var(--bg-image); z-index: 1; }
+        .block-layer { z-index: 2; }
 
-        .background-base, .parallax-layer {
+        /* --- MC FLOATING OBJECTS --- */
+        .mc-obj {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            background-size: contain;
             background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover; 
-            will-change: transform;
-            transition: transform 0.6s cubic-bezier(0.1, 0.5, 0.2, 1);
+            image-rendering: pixelated;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+            animation: floatObj 6s ease-in-out infinite;
         }
 
-        .background-base {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--bg-image);
-            z-index: 1;
+        .block-type { width: clamp(35px, 6vw, 55px); height: clamp(35px, 6vw, 55px); }
+        .item-type { width: clamp(30px, 5vw, 45px); height: clamp(30px, 5vw, 45px); }
+
+        /* Specific Placements & Animations */
+        .b1 { top: 15%; left: 8%; background-image: var(--block-grass); transform: rotate(-10deg); animation-duration: 5s; }
+        .b2 { top: 75%; left: 12%; background-image: var(--block-dirt); transform: rotate(15deg); animation-duration: 7s; }
+        .b3 { top: 10%; left: 85%; background-image: var(--block-command); filter: drop-shadow(0 0 15px #c170ff); animation-duration: 4s; }
+        .b4 { top: 82%; left: 88%; background-image: var(--block-steve); transform: rotate(-5deg); animation-duration: 8s; }
+        .b5 { top: 40%; left: 5%; background-image: var(--block-diamond); scale: 0.8; animation-delay: -2s; }
+        .b6 { top: 55%; left: 92%; background-image: var(--block-stone); transform: rotate(20deg); scale: 0.9; }
+        
+        /* Items */
+        .i1 { top: 25%; left: 20%; background-image: var(--item-totem); filter: drop-shadow(0 0 10px #ffea00); animation-duration: 4.5s; }
+        .i2 { top: 65%; left: 25%; background-image: var(--item-sword); transform: rotate(-45deg); animation-duration: 5.5s; }
+        .i3 { top: 30%; left: 75%; background-image: var(--item-cake); animation-duration: 9s; }
+        .i4 { top: 60%; left: 80%; background-image: var(--item-pickaxe); transform: rotate(10deg); animation-duration: 6.5s; }
+
+        @keyframes floatObj {
+            0%, 100% { translate: 0 0px; }
+            50% { translate: 0 -25px; }
         }
 
-        .parallax-layer {
-            background-image: var(--fg-image);
-            z-index: 2;
-            opacity: 0.7;
-        }
+        .parallax-layer { background-image: var(--fg-image); z-index: 3; opacity: 0.6; }
+        #canvas { position: absolute; top: 0; left: 0; z-index: 4; pointer-events: none; }
 
-        #canvas {
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 3;
-            pointer-events: none;
-        }
+        /* --- UI ELEMENTS --- */
+        .music-control { position: fixed; top: 25px; right: 25px; z-index: 100; cursor: pointer; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; pointer-events: auto; }
+        .music-control.playing { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); animation: pulse 2s infinite; }
+        .container { position: relative; z-index: 10; text-align: center; width: 90%; max-width: 600px; display: flex; flex-direction: column; align-items: center; gap: clamp(30px, 8vh, 50px); pointer-events: none; }
+        .fade-element { opacity: 0; transform: translateY(20px); animation: slideUpFade 1s ease-out forwards; }
+        h1 { font-size: clamp(2.8rem, 12vw, 6.5rem); font-weight: 900; letter-spacing: -2px; }
+        h1 span { display: inline-block; background: linear-gradient(135deg, #ffffff 0%, #00d2ff 25%, #9d50bb 50%, #6e48aa 75%, #ffffff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: floatLetter 4s ease-in-out infinite, shimmerSpace 8s linear infinite; }
+        .sub-heading { font-size: clamp(1rem, 4vw, 1.3rem); color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+        .btn { text-decoration: none; color: white; padding: 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; }
 
-        /* --- MUSIC TOGGLE --- */
-        .music-control {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            z-index: 100;
-            cursor: pointer;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-        }
-
-        .music-control.playing {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        /* --- UI CONTAINER --- */
-        .container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: clamp(30px, 8vh, 50px);
-            pointer-events: none;
-        }
-
-        .fade-element {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: slideUpFade 1s ease-out forwards;
-        }
-
-        h1 {
-            font-size: clamp(2.8rem, 12vw, 6.5rem);
-            font-weight: 900;
-            letter-spacing: -2px;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
-        h1 span {
-            display: inline-block;
-            /* Space Nebula Gradient */
-            background: linear-gradient(
-                135deg, 
-                #ffffff 0%, 
-                #00d2ff 25%, 
-                #9d50bb 50%, 
-                #6e48aa 75%, 
-                #ffffff 100%
-            );
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: 
-                floatLetter 4s ease-in-out infinite, 
-                shimmerSpace 8s linear infinite;
-        }
-
-        .sub-heading {
-            font-size: clamp(1rem, 4vw, 1.3rem);
-            font-weight: 500;
-            letter-spacing: 2px;
-            color: var(--primary);
-            text-transform: uppercase;
-        }
-
-        p {
-            font-size: clamp(0.8rem, 3vw, 1rem);
-            letter-spacing: 3px;
-            opacity: 0.6;
-            margin-top: 10px;
-        }
-
-        .static-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            max-width: 280px;
-            pointer-events: auto;
-        }
-
-        .btn {
-            text-decoration: none;
-            color: white;
-            padding: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            font-weight: 600;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-
-        @media (hover: hover) {
-            .btn:hover {
-                background: rgba(255,255,255,0.12);
-                transform: translateY(-2px);
-                border-color: var(--primary);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        /* --- ANIMATIONS --- */
         @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes floatLetter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes floatLetter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
         @keyframes shimmerSpace { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
 
-        #enable-motion {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 24px;
-            background: rgba(0, 210, 255, 0.2);
-            border: 1px solid var(--primary);
-            color: white;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: bold;
-            z-index: 1000;
-            display: none;
-            backdrop-filter: blur(5px);
-            pointer-events: auto;
-        }
+        #enable-motion { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: rgba(0, 210, 255, 0.2); border: 1px solid var(--primary); color: white; border-radius: 30px; font-size: 11px; font-weight: bold; z-index: 1000; display: none; backdrop-filter: blur(5px); pointer-events: auto; }
     </style>
 </head>
 <body>
@@ -234,11 +98,25 @@
     </div>
 
     <audio id="bg-music" loop>
-        <source src= track.mp3 type= 'audio/mpeg'>
+        <source src="track.mp3" type="audio/mpeg">
     </audio>
 
     <div class="bg-container">
         <div class="background-base" id="bg-base"></div>
+        
+        <div class="block-layer" id="block-layer">
+            <div class="mc-obj block-type b1"></div>
+            <div class="mc-obj block-type b2"></div>
+            <div class="mc-obj block-type b3"></div>
+            <div class="mc-obj block-type b4"></div>
+            <div class="mc-obj block-type b5"></div>
+            <div class="mc-obj block-type b6"></div>
+            <div class="mc-obj item-type i1"></div>
+            <div class="mc-obj item-type i2"></div>
+            <div class="mc-obj item-type i3"></div>
+            <div class="mc-obj item-type i4"></div>
+        </div>
+
         <div class="parallax-layer" id="fg-layer"></div>
     </div>
     
@@ -248,7 +126,7 @@
         <div id="parallax-content" class="fade-element" style="animation-delay: 0.2s;">
             <h1 id="title-parallax"><span>JAYESH_IRL</span></h1>
             <div class="sub-heading fade-element" id="sub-parallax" style="animation-delay: 0.4s;">The Videogame of Life</div>
-            <p class="fade-element" id="p-parallax" style="animation-delay: 0.6s;">After boards bro. After boards.</p>
+            <p class="fade-element" id="p-parallax" style="animation-delay: 0.6s; opacity: 0.6; letter-spacing: 3px; font-size: 0.9rem;">After boards bro. After boards.</p>
         </div>
 
         <div class="static-controls fade-element" style="animation-delay: 0.8s;">
@@ -261,6 +139,7 @@
 
     <script>
         const bgBase = document.getElementById('bg-base');
+        const blockLayer = document.getElementById('block-layer');
         const fgLayer = document.getElementById('fg-layer');
         const title = document.getElementById('title-parallax');
         const sub = document.getElementById('sub-parallax');
@@ -278,7 +157,6 @@
 
         if(isMobile) document.getElementById('enable-motion').style.display = 'block';
 
-        // --- MUSIC ---
         musicBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
                 bgMusic.play();
@@ -291,17 +169,17 @@
             }
         });
 
-        // --- PARALLAX ---
         function updateParallax() {
             const x = isMobile ? gyroX : (mouseX / (window.innerWidth / 2));
             const y = isMobile ? gyroY : (mouseY / (window.innerHeight / 2));
 
-            bgBase.style.transform = `translate(${x * -2}%, ${y * -2}%)`;
-            fgLayer.style.transform = `translate(${x * -4}%, ${y * -4}%)`;
+            bgBase.style.transform = `translate(${x * -1.5}%, ${y * -1.5}%)`;
+            blockLayer.style.transform = `translate(${x * -3}%, ${y * -3}%)`;
+            fgLayer.style.transform = `translate(${x * -5}%, ${y * -5}%)`;
 
-            title.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-            sub.style.transform = `translate(${x * 5}px, ${y * 5}px)`;
-            pTag.style.transform = `translate(${x * 2}px, ${y * 2}px)`;
+            title.style.transform = `translate(${x * 12}px, ${y * 12}px)`;
+            sub.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
+            pTag.style.transform = `translate(${x * 3}px, ${y * 3}px)`;
 
             requestAnimationFrame(updateParallax);
         }
@@ -330,16 +208,15 @@
             this.style.display = 'none';
         });
 
-        // --- VISUALS ---
         function initParticles() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            particles = Array.from({length: 150}, () => ({
+            particles = Array.from({length: 80}, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                s: Math.random() * 1.8,
-                vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.2,
+                s: Math.random() * 1.2,
+                vx: (Math.random() - 0.5) * 0.15,
+                vy: (Math.random() - 0.5) * 0.15,
                 a: Math.random()
             }));
         }
@@ -362,7 +239,7 @@
                 s.opacity -= 0.015; if(s.opacity <= 0) stars.splice(i, 1);
             });
 
-            if(Math.random() < 0.01) {
+            if(Math.random() < 0.008) {
                 stars.push({x: Math.random() * canvas.width, y: Math.random() * (canvas.height / 2), vx: 12 + Math.random() * 8, vy: 4 + Math.random() * 4, opacity: 1});
             }
             requestAnimationFrame(drawParticles);
@@ -378,4 +255,3 @@
     </script>
 </body>
 </html>
-
